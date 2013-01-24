@@ -26,8 +26,7 @@ public class ApiKey
         }
         
     }
-    
-    @SuppressWarnings("unused")
+     
     private String getKeyFromKeyFile(String keyFilePath) throws IOException
     {
         String remainKeyFilePath = keyFilePath;

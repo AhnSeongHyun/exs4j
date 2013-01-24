@@ -3,7 +3,6 @@ package org.espressoOtr.exs.api.bing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
- 
 
 import net.billylieurance.azuresearch.AzureSearchResultSet;
 import net.billylieurance.azuresearch.AzureSearchWebQuery;
@@ -35,8 +34,6 @@ public class BingAPI implements SearchAPI
     
     Logger logger = LoggerFactory.getLogger(BingAPI.class);
     
-    
-    
     public BingAPI(ApiKey bingApiKey)
     {
         this.apiKey = bingApiKey;
@@ -48,8 +45,7 @@ public class BingAPI implements SearchAPI
     }
     
     public void request(String keyword)
-    {
-        
+    { 
         logger.info(BingAPI.class.getName() + " KEYWORD : " + keyword);
         
         try

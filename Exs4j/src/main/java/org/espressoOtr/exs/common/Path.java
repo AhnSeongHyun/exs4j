@@ -1,7 +1,7 @@
 package org.espressoOtr.exs.common;
 
 import org.espressoOtr.exs.api.bing.BingAPI;
-import org.espressoOtr.exs.api.bing.DaumAPI;
+import org.espressoOtr.exs.api.daum.DaumAPI;
 import org.espressoOtr.exs.api.naver.NaverAPI;
 
 

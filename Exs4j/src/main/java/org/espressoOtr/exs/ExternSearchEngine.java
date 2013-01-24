@@ -1,29 +1,26 @@
 package org.espressoOtr.exs;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.log4j.PropertyConfigurator;
-import org.espressoOtr.exs.server.ExsServer; 
+import org.espressoOtr.exs.conf.ConfigurationReader;
+import org.espressoOtr.exs.server.ExsServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Main class
- * 
- * @author AhnSeongHyun(sh84.ahn@gmail.com) Can select Server mode or Command
- *         mode.
- * 
- */
 public class ExternSearchEngine
 {
     static ExsMode exsMode = ExsMode.NONE;
-    
-    static ExsServer exsServer = new ExsServer();
-    
     static Logger logger = LoggerFactory.getLogger(ExternSearchEngine.class);
     
     public static void main(String[] args) throws Exception
-    {
-        PropertyConfigurator.configure("./lib/log4j.propertise");
+    { 
+        setConfig(args);
+        
         getExsMode(args);
+        
+        ExsServer exsServer = new ExsServer();
         
         if (exsMode == ExsMode.SERVER)
             exsServer.run();
@@ -31,14 +28,39 @@ public class ExternSearchEngine
             showUsage();
     }
     
+    private static void setConfig(String[] args)
+    { 
+        String confFilePath = getConfFilePath(args);
+        Map<String, String> confKv = ConfigurationReader.settingConfigurations(confFilePath);
+        
+        PropertyConfigurator.configure(System.getProperty("log4j_properties"));
+        
+        Set<String> confKeySet = confKv.keySet();
+        
+        for (String key : confKeySet)
+        {
+            logger.info("{}:{}", key, confKv.get(key));
+        }
+    }
+    
+    private static String getConfFilePath(String[] args)
+    {
+        String confFilePath = null;
+        if (args.length == 2)
+        {
+            confFilePath = args[1];
+        }
+        return confFilePath;
+    }
+    
     public static void showUsage()
     {
-        logger.info("SERVER MODE : java -jar exs.jar -server");
+        logger.info("exs4j : java -jar exs4j.jar -server [config file path]");
     }
     
     public static void getExsMode(String[] args)
     {
-        if (args.length == 1)
+        if (args.length >= 1)
         {
             if (args[0].equals("-server"))
                 exsMode = ExsMode.SERVER;

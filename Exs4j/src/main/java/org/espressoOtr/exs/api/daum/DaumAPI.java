@@ -1,4 +1,4 @@
-package org.espressoOtr.exs.api.bing;
+package org.espressoOtr.exs.api.daum;
 
 import java.io.IOException;
 import java.net.URLEncoder;

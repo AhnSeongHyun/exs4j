@@ -11,10 +11,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.espressoOtr.exs.api.ApiKey;
-import org.espressoOtr.exs.api.SearchAPI;
-import org.espressoOtr.exs.api.bing.DaumAPI;
+import org.espressoOtr.exs.api.SearchAPI; 
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

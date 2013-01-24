@@ -4,6 +4,5 @@ public enum SearchEngines
 {
     NAVER,
     DAUM, 
-    BING, 
-    WOLFGRAMALPHA
+    BING,  
 }

@@ -3,8 +3,8 @@ package org.espressoOtr.exs.api;
 import java.util.List;
 
 import org.espressoOtr.exs.api.bing.BingAPI;
-import org.espressoOtr.exs.api.bing.DaumAPI;
-import org.espressoOtr.exs.api.bing.DaumAPITarget;
+import org.espressoOtr.exs.api.daum.DaumAPI;
+import org.espressoOtr.exs.api.daum.DaumAPITarget;
 import org.espressoOtr.exs.api.naver.NaverAPI;
 import org.espressoOtr.exs.api.naver.NaverAPITarget;
 import org.espressoOtr.exs.api.result.SearchResult;

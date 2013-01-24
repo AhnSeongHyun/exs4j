@@ -21,6 +21,12 @@ public class ExsServer
     private int port = 8000;
     Logger logger = LoggerFactory.getLogger(ExsServer.class);
     
+    
+    public ExsServer()
+    {
+        this.port = Integer.parseInt(System.getProperty("port"));
+    }
+    
     /**
      * server start port 8000
      */
@@ -58,7 +64,7 @@ public class ExsServer
     
     /**
      * @param port
-     *            the port to set
+     * the port to set
      */
     public void setPort(int port)
     {
