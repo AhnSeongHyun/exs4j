@@ -1,11 +1,10 @@
 package org.espressoOtr.exs.api;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
-import org.espressoOtr.exs.common.Path;
-import org.espressootr.lib.file.FileReaderManager;
+import org.espressoOtr.exs.api.bing.BingAPI;
+import org.espressoOtr.exs.api.daum.DaumAPI;
+import org.espressoOtr.exs.api.naver.NaverAPI;
 
 public class ApiKey
 {
@@ -14,49 +13,52 @@ public class ApiKey
     
     public ApiKey(Object classType)
     {
-        
-        try
-        {
-            APIKEY = getKeyFromKeyFile(Path.getRemainKeyFilePath(classType));
-        }
-        catch (IOException e)
-        {
-            
-            e.printStackTrace();
-        }
-        
-    }
-     
-    private String getKeyFromKeyFile(String keyFilePath) throws IOException
-    {
-        String remainKeyFilePath = keyFilePath;
-        
-        List<String> remainKeyList = FileReaderManager.readLineFromFile(remainKeyFilePath);
-        
-        return extractKey(remainKeyList);
+        APIKEY = getKeyString(classType);
     }
     
-    private String extractKey(List<String> remainKeyList)
+    private String getKeyString(Object classType)
+    { 
+        String apiKey = "";
+        
+        String propertyKey = "";
+        if (classType.getClass() == NaverAPI.class)
+        {
+            propertyKey = "naver_key";
+        }
+        else if (classType.getClass() == DaumAPI.class)
+        {
+            propertyKey = "daum_key";
+                   
+        }
+        else if (classType.getClass() == BingAPI.class)
+        {
+            propertyKey = "bing_key";
+        }
+        
+        apiKey = getRandomKey(System.getProperty(propertyKey));
+        
+        return apiKey;
+    }
+    
+    private String getRandomKey(String keys)
     {
+        String[] keyArr = keys.split(",");
         
-        int keyCount = remainKeyList.size();
+        Random oRandom = new Random();
         
-        Random randomGenerator = new Random();
-        int randomIndex = randomGenerator.nextInt(keyCount);
+        int ri = oRandom.nextInt(keyArr.length) + 0;
         
-        return remainKeyList.get(randomIndex);
+        return keyArr[ri];
         
     }
     
     public String getKey()
     {
         return this.APIKEY;
-        
     }
     
     public void setKey(String apiKey)
     {
         this.APIKEY = apiKey;
-        
     }
 }

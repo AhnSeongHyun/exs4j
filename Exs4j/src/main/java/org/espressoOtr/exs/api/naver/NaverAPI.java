@@ -294,7 +294,7 @@ public class NaverAPI implements SearchAPI
     
     public List<SearchResult> response()
     {
-        logger.info(NaverAPI.class.getName() + " result : " + this.searchResultList.size());
+        logger.debug(NaverAPI.class.getName() + " result : " + this.searchResultList.size());
         
         for (SearchResult sr : this.searchResultList)
         {

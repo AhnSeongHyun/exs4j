@@ -42,6 +42,7 @@ public class BingAPI implements SearchAPI
     public BingAPI()
     {
         this.apiKey = new ApiKey(this);
+        System.out.println(this.apiKey.getKey());
     }
     
     public void request(String keyword)
@@ -98,7 +99,7 @@ public class BingAPI implements SearchAPI
     
     public List<SearchResult> response()
     {
-        logger.info(BingAPI.class.getName() + " result : " + this.searchResultList.size());
+        logger.debug(BingAPI.class.getName() + " result : " + this.searchResultList.size());
         
         for (SearchResult sr : this.searchResultList)
         {

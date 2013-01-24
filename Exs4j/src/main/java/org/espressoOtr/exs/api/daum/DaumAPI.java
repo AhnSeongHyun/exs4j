@@ -198,7 +198,7 @@ public class DaumAPI implements SearchAPI
     public List<SearchResult> response()
     {
         
-        logger.info(DaumAPI.class.getName() + " result : " + this.searchResultList.size());
+        logger.debug(DaumAPI.class.getName() + " result : " + this.searchResultList.size());
         
         for (SearchResult sr : this.searchResultList)
         {
