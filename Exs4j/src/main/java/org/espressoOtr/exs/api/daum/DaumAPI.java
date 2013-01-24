@@ -57,31 +57,31 @@ public class DaumAPI implements SearchAPI
         this.apiKey = new ApiKey(this);
     }
     
-    public void SetTarget(DaumAPITarget target)
+    public void setTarget(DaumAPITarget target)
     {
         
         this.target = target;
     }
     
-    public DaumAPITarget GetTarget()
+    public DaumAPITarget getTarget()
     {
         return this.target;
         
     }
     
-    public String GetTargetString()
+    public String getTargetString()
     {
         String targetString = InitUtil.EMPTY_STRING;
         
-        if (GetTarget() == DaumAPITarget.BLOG)
+        if (getTarget() == DaumAPITarget.BLOG)
         {
             targetString = "blog";
         }
-        else if (GetTarget() == DaumAPITarget.CAFE)
+        else if (getTarget() == DaumAPITarget.CAFE)
         {
             targetString = "cafe";
         }
-        else if (GetTarget() == DaumAPITarget.WEB)
+        else if (getTarget() == DaumAPITarget.WEB)
         {
             targetString = "web";
         }
@@ -97,7 +97,7 @@ public class DaumAPI implements SearchAPI
         
         try
         {
-            RequestDaumAPI(keyword);
+            requestDaumAPI(keyword);
             
         }
         catch (Exception e)
@@ -107,9 +107,9 @@ public class DaumAPI implements SearchAPI
         
     }
     
-    private void RequestDaumAPI(String keyword) throws IOException, SAXException, ParserConfigurationException
+    private void requestDaumAPI(String keyword) throws IOException, SAXException, ParserConfigurationException
     {
-        uri = GetURI(keyword);
+        uri = getURI(keyword);
         
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         
@@ -121,32 +121,32 @@ public class DaumAPI implements SearchAPI
         
     }
     
-    private String GetURI(String keyword) throws IOException
+    private String getURI(String keyword) throws IOException
     {
-        String createdUri = "http://apis.daum.net/search/" + GetTargetString() + "?q=" + URLEncoder.encode(keyword, "UTF-8") + this.GetSubURI()
+        String createdUri = "http://apis.daum.net/search/" + getTargetString() + "?q=" + URLEncoder.encode(keyword, "UTF-8") + this.getSubURI()
                 + "&apikey=" + this.apiKey.getKey();
         
         return createdUri;
     }
     
-    private String GetSubURI()
+    private String getSubURI()
     {
         
         String subURI = InitUtil.EMPTY_STRING;
         String output = "xml";
         
-        if (GetTarget() == DaumAPITarget.BLOG)
+        if (getTarget() == DaumAPITarget.BLOG)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
             
         }
         
-        else if (GetTarget() == DaumAPITarget.WEB)
+        else if (getTarget() == DaumAPITarget.WEB)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&output=" + output;
             
         }
-        else if (GetTarget() == DaumAPITarget.CAFE)
+        else if (getTarget() == DaumAPITarget.CAFE)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
             
@@ -199,17 +199,12 @@ public class DaumAPI implements SearchAPI
     {
         
         logger.debug(DaumAPI.class.getName() + " result : " + this.searchResultList.size());
-        
-        for (SearchResult sr : this.searchResultList)
-        {
-            sr.PrintResult();
-        }
-        
+         
         return this.searchResultList;
         
     }
     
-    public String GetAPIName()
+    public String getAPIName()
     {
         return this.getClass().getName();
         

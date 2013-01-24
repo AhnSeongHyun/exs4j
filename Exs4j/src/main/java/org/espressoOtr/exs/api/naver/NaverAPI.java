@@ -56,29 +56,29 @@ public class NaverAPI implements SearchAPI
         this.apiKey = new ApiKey(this);
     }
     
-    public void SetTarget(NaverAPITarget target)
+    public void setTarget(NaverAPITarget target)
     {
         
         this.target = target;
     }
     
-    public String GetTargetString()
+    public String getTargetString()
     {
         String targetString = "";
         
-        if (GetTarget() == NaverAPITarget.BLOG)
+        if (getTarget() == NaverAPITarget.BLOG)
         {
             targetString = "blog";
         }
-        else if (GetTarget() == NaverAPITarget.CAFEARTICLE)
+        else if (getTarget() == NaverAPITarget.CAFEARTICLE)
         {
             targetString = "cafearticle";
         }
-        else if (GetTarget() == NaverAPITarget.NEWS)
+        else if (getTarget() == NaverAPITarget.NEWS)
         {
             targetString = "news";
         }
-        else if (GetTarget() == NaverAPITarget.WEBKR)
+        else if (getTarget() == NaverAPITarget.WEBKR)
         {
             targetString = "webkr";
         }
@@ -87,7 +87,7 @@ public class NaverAPI implements SearchAPI
         
     }
     
-    public NaverAPITarget GetTarget()
+    public NaverAPITarget getTarget()
     {
         return this.target;
         
@@ -100,7 +100,7 @@ public class NaverAPI implements SearchAPI
         
         try
         {
-            RequestNaverAPI(keyword);
+            requestNaverAPI(keyword);
             
         }
         catch (Exception e)
@@ -109,10 +109,10 @@ public class NaverAPI implements SearchAPI
         }
     }
     
-    private void RequestNaverAPI(String keyword) throws IOException, ParserConfigurationException, SAXException
+    private void requestNaverAPI(String keyword) throws IOException, ParserConfigurationException, SAXException
     {
         
-        uri = GetURI(keyword);
+        uri = getURI(keyword);
         
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         
@@ -122,35 +122,35 @@ public class NaverAPI implements SearchAPI
         this.searchResultList = parseDOM(doc);
     }
     
-    private String GetURI(String keyword) throws IOException
+    private String getURI(String keyword) throws IOException
     {
         
-        String createdUri = "http://openapi.naver.com/search?key=" + this.apiKey.getKey() + "&target=" + this.GetTargetString() + "&query="
-                + URLEncoder.encode(keyword, "UTF-8") + GetSubURI();
+        String createdUri = "http://openapi.naver.com/search?key=" + this.apiKey.getKey() + "&target=" + this.getTargetString() + "&query="
+                + URLEncoder.encode(keyword, "UTF-8") + getSubURI();
         
         return createdUri;
     }
     
-    private String GetSubURI()
+    private String getSubURI()
     {
         
         String subURI = "";
-        if (GetTarget() == NaverAPITarget.BLOG)
+        if (getTarget() == NaverAPITarget.BLOG)
         {
             subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
         }
         
-        else if (GetTarget() == NaverAPITarget.CAFEARTICLE)
+        else if (getTarget() == NaverAPITarget.CAFEARTICLE)
         {
             subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
             
         }
-        else if (GetTarget() == NaverAPITarget.NEWS)
+        else if (getTarget() == NaverAPITarget.NEWS)
         {
             subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
             
         }
-        else if (GetTarget() == NaverAPITarget.WEBKR)
+        else if (getTarget() == NaverAPITarget.WEBKR)
         {
             subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo);
             
@@ -164,19 +164,19 @@ public class NaverAPI implements SearchAPI
         
         List<SearchResult> searchResultList = Collections.emptyList();
         
-        if (GetTarget() == NaverAPITarget.BLOG)
+        if (getTarget() == NaverAPITarget.BLOG)
         {
             searchResultList = parseBlogDom(doc);
         }
-        else if (GetTarget() == NaverAPITarget.CAFEARTICLE)
+        else if (getTarget() == NaverAPITarget.CAFEARTICLE)
         {
             searchResultList = parseCafeArticleDom(doc);
         }
-        else if (GetTarget() == NaverAPITarget.NEWS)
+        else if (getTarget() == NaverAPITarget.NEWS)
         {
             searchResultList = parseNewsDom(doc);
         }
-        else if (GetTarget() == NaverAPITarget.WEBKR)
+        else if (getTarget() == NaverAPITarget.WEBKR)
         {
             searchResultList = parseWebKrDom(doc);
         }
@@ -295,16 +295,11 @@ public class NaverAPI implements SearchAPI
     public List<SearchResult> response()
     {
         logger.debug(NaverAPI.class.getName() + " result : " + this.searchResultList.size());
-        
-        for (SearchResult sr : this.searchResultList)
-        {
-            sr.PrintResult();
-        }
-        
+         
         return this.searchResultList;
     }
     
-    public String GetAPIName()
+    public String getAPIName()
     {
         return this.getClass().getName();
         
@@ -348,8 +343,7 @@ public class NaverAPI implements SearchAPI
     
     @Override
     public void setPageNo(int pageNo)
-    {
-        
+    { 
         if (pageNo > this.pageNoLimit)
         {
             this.pageNo = this.pageNoDefault;

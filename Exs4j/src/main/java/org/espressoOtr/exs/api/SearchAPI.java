@@ -10,7 +10,7 @@ public interface SearchAPI
 { 
     public void request(String keyword);
     public List<SearchResult> response();
-    public String GetAPIName(); 
+    public String getAPIName(); 
     public int getOutputCount();
     public void setOutputCount(int outputCount);
     

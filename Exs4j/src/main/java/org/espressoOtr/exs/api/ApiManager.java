@@ -10,7 +10,6 @@ import org.espressoOtr.exs.api.naver.NaverAPITarget;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
- 
 
 public class ApiManager
 {
@@ -63,8 +62,8 @@ public class ApiManager
             target = domainSplitted[1].trim();
         }
         
-        logger.info("service : " + service);
-        logger.info("target : " + target);
+        logger.info("service :{} ", service);
+        logger.info("target : {}", target);
         
         switchSearchAPI(service, target);
         currentOutputCount = outputCount;
@@ -90,7 +89,7 @@ public class ApiManager
         {
             api = setBingSearchEngine(target);
         }
-      
+        
         else
         {
             api = null;
@@ -104,23 +103,23 @@ public class ApiManager
         
         if (NaverAPITarget.BLOG.toString().equals(target.toUpperCase()))
         {
-            naverApi.SetTarget(NaverAPITarget.BLOG);
+            naverApi.setTarget(NaverAPITarget.BLOG);
         }
         else if (NaverAPITarget.CAFEARTICLE.toString().equals(target.toUpperCase()))
         {
-            naverApi.SetTarget(NaverAPITarget.CAFEARTICLE);
+            naverApi.setTarget(NaverAPITarget.CAFEARTICLE);
         }
         else if (NaverAPITarget.NEWS.toString().equals(target.toUpperCase()))
         {
-            naverApi.SetTarget(NaverAPITarget.NEWS);
+            naverApi.setTarget(NaverAPITarget.NEWS);
         }
         else if (NaverAPITarget.WEBKR.toString().equals(target.toUpperCase()))
         {
-            naverApi.SetTarget(NaverAPITarget.WEBKR);
+            naverApi.setTarget(NaverAPITarget.WEBKR);
         }
         else
         {
-            naverApi.SetTarget(NaverAPITarget.WEBKR);
+            naverApi.setTarget(NaverAPITarget.WEBKR);
         }
         
         return naverApi;
@@ -130,23 +129,23 @@ public class ApiManager
     private static SearchAPI setDaumSearchEngine(String target)
     {
         DaumAPI daumApi = new DaumAPI();
-        daumApi.SetTarget(DaumAPITarget.WEB);
+        daumApi.setTarget(DaumAPITarget.WEB);
         
         if (DaumAPITarget.BLOG.toString().equals(target.toUpperCase()))
         {
-            daumApi.SetTarget(DaumAPITarget.BLOG);
+            daumApi.setTarget(DaumAPITarget.BLOG);
         }
         else if (DaumAPITarget.CAFE.toString().equals(target.toUpperCase()))
         {
-            daumApi.SetTarget(DaumAPITarget.CAFE);
+            daumApi.setTarget(DaumAPITarget.CAFE);
         }
         else if (DaumAPITarget.WEB.toString().equals(target.toUpperCase()))
         {
-            daumApi.SetTarget(DaumAPITarget.WEB);
+            daumApi.setTarget(DaumAPITarget.WEB);
         }
         else
         {
-            daumApi.SetTarget(DaumAPITarget.WEB);
+            daumApi.setTarget(DaumAPITarget.WEB);
         }
         
         return daumApi;
@@ -158,7 +157,6 @@ public class ApiManager
         return bingApi;
     }
     
-  
     public List<SearchResult> response()
     {
         List<SearchResult> searchResult = api.response();

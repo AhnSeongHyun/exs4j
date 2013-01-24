@@ -51,7 +51,7 @@ public class BingAPI implements SearchAPI
         
         try
         {
-            RequestBingAPI(keyword);
+            requestBingAPI(keyword);
             
         }
         catch (Exception e)
@@ -61,7 +61,7 @@ public class BingAPI implements SearchAPI
         
     }
     
-    private void RequestBingAPI(String keyword)
+    private void requestBingAPI(String keyword)
     {
         
         AzureSearchWebQuery aq = new AzureSearchWebQuery();
@@ -101,15 +101,10 @@ public class BingAPI implements SearchAPI
     {
         logger.debug(BingAPI.class.getName() + " result : " + this.searchResultList.size());
         
-        for (SearchResult sr : this.searchResultList)
-        {
-            sr.PrintResult();
-        }
-        
         return this.searchResultList;
     }
     
-    public String GetAPIName()
+    public String getAPIName()
     {
         return this.getClass().getName();
         

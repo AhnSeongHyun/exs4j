@@ -1,6 +1,7 @@
 package org.espressoOtr.exs.api.result;
 
-import com.google.gson.Gson;
+import org.espressootr.lib.json.JsonBodum;
+ 
 
 public class TextSearchResult implements SearchResult
 {
@@ -20,13 +21,12 @@ public class TextSearchResult implements SearchResult
     
     
     public String toJson()
-    {
-        Gson gson = new Gson(); 
-        String json = gson.toJson(this);
+    { 
+        String json =  JsonBodum.toJson(this);
         return json;
     }
     
-    public void PrintResult()
+    public void printResult()
     {
         
         System.out.println("=====================================================");
