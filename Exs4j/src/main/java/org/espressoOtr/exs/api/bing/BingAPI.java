@@ -46,7 +46,7 @@ public class BingAPI implements SearchAPI
     }
     
     public void request(String keyword)
-    { 
+    {
         logger.info(BingAPI.class.getName() + " KEYWORD : " + keyword);
         
         try
@@ -86,9 +86,9 @@ public class BingAPI implements SearchAPI
         {
             TextSearchResult searchResult = new TextSearchResult();
             
-            searchResult.title = anr.getTitle();
-            searchResult.link = anr.getUrl();
-            searchResult.snippet = anr.getDescription();
+            searchResult.setTitle(anr.getTitle());
+            searchResult.setLink(anr.getUrl());
+            searchResult.setSnippet(anr.getDescription());
             
             searchResultList.add(searchResult);
             

@@ -12,24 +12,17 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author AhnSeongHyun TCP/IP Server
- */
+
 public class ExsServer
 {
-    
     private int port = 8000;
     Logger logger = LoggerFactory.getLogger(ExsServer.class);
-    
     
     public ExsServer()
     {
         this.port = Integer.parseInt(System.getProperty("port"));
     }
     
-    /**
-     * server start port 8000
-     */
     public void run()
     {
         
@@ -54,18 +47,12 @@ public class ExsServer
         
     }
     
-    /**
-     * @return the port
-     */
+    
     public int getPort()
     {
         return port;
     }
     
-    /**
-     * @param port
-     * the port to set
-     */
     public void setPort(int port)
     {
         this.port = port;

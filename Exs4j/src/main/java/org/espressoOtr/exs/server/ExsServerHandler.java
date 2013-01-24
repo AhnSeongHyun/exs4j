@@ -3,6 +3,8 @@ package org.espressoOtr.exs.server;
 import org.espressoOtr.exs.api.ApiManager;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
+import org.espressootr.lib.json.JsonBodum;
+import org.espressootr.lib.string.StringAppender;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -16,8 +18,7 @@ import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
+ 
 
 public class ExsServerHandler extends SimpleChannelHandler
 {
@@ -25,28 +26,22 @@ public class ExsServerHandler extends SimpleChannelHandler
     static final ChannelGroup allChannels = new DefaultChannelGroup("time-server");
     
     final String connectedMsg = "[connected] ";
-    
     final String receivedMsg = "[recvd] ";
-    
     final String disconnectedMsg = "[disconnected] ";
     
-    StringBuffer mergedMessage = new StringBuffer();
-    
     String msg = "";
-    
-    Gson gson = null;
-    
-    ApiManager apiManager = null;
-    
-    char CR = '\r';
-    
-    char LF = '\n';
+    char CR = '\r'; 
+    char LF = '\n'; 
+   
+    ApiManager apiManager = null; 
+    StringBuilder receviedMessage = null;  
     
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
+    
     public ExsServerHandler()
     {
-        gson = new Gson();
+        receviedMessage = new StringBuilder();
         apiManager = new ApiManager();
     }
     
@@ -56,18 +51,18 @@ public class ExsServerHandler extends SimpleChannelHandler
         ChannelBuffer request = (ChannelBuffer) e.getMessage();
         
         msg = new String(request.array());
-        mergedMessage.append(msg);
+        receviedMessage.append(msg);
         
         logger.info(receivedMsg + msg);
         
         if (msg.charAt(msg.length() - 2) == CR && msg.charAt(msg.length() - 1) == LF)
         {
-            logger.info("validmsg");
+            logger.debug("validmsg");
             
-            mergedMessage.append(msg);
+            receviedMessage.append(msg);
             
-            ExsRequestParam recvExsData = gson.fromJson(msg, ExsRequestParam.class);
-            mergedMessage.delete(0, mergedMessage.length());
+            ExsRequestParam recvExsData = JsonBodum.fromJson(msg, ExsRequestParam.class);
+            receviedMessage.delete(0, receviedMessage.length());
             
             apiManager.request(recvExsData.getDomain(), recvExsData.getKeyword(), recvExsData.getOutputCount(), recvExsData.getPageNo());
             
@@ -88,9 +83,8 @@ public class ExsServerHandler extends SimpleChannelHandler
         }
         else
         {
-            logger.info("unvalidmsg");
-            
-            mergedMessage.append(msg);
+            logger.debug("unvalidmsg"); 
+            receviedMessage.append(msg);
             
         }
         
@@ -98,12 +92,10 @@ public class ExsServerHandler extends SimpleChannelHandler
     
     public ChannelFuture sendCrxResponseParam(Channel responseChannel, ExsResponseParam exsResponseParam)
     {
-        StringBuffer responseJson = new StringBuffer(gson.toJson(exsResponseParam));
-        responseJson.append(CR);
-        responseJson.append(LF);
+        String toSendJson = StringAppender.mergeToStr(JsonBodum.toJson(exsResponseParam), String.valueOf(CR), String.valueOf(LF));
         
         ChannelBuffer buf = ChannelBuffers.dynamicBuffer();
-        buf.writeBytes(responseJson.toString().getBytes());
+        buf.writeBytes(toSendJson.getBytes());
         
         return responseChannel.write(buf);
         
@@ -111,15 +103,12 @@ public class ExsServerHandler extends SimpleChannelHandler
     
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e)
-    {// 접속
-     // 할때마다
-     // 알려줌.
+    {//if client connect, call this. 
         
         Channel connectedChannel = e.getChannel();
         allChannels.add(connectedChannel);
         
-        msg = connectedMsg + e.getChannel().getLocalAddress() + " , Connections:" + allChannels.size();
-        
+        msg = StringAppender.mergeToStr(connectedMsg, e.getChannel().getLocalAddress().toString(), " , Connections:", String.valueOf(allChannels.size()));
         logger.info(msg);
         
     }
@@ -127,7 +116,7 @@ public class ExsServerHandler extends SimpleChannelHandler
     @Override
     public void channelDisconnected(ChannelHandlerContext crx, ChannelStateEvent e)
     {
-        msg = disconnectedMsg + e.getChannel().getLocalAddress() + " , Connections:" + allChannels.size();
+        msg = StringAppender.mergeToStr(disconnectedMsg, e.getChannel().getLocalAddress().toString(), " , Connections:", String.valueOf(allChannels.size()));
         logger.info(msg);
     }
     

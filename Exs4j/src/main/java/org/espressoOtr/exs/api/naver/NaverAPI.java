@@ -197,9 +197,9 @@ public class NaverAPI implements SearchAPI
             
             TextSearchResult searchResult = new TextSearchResult();
             
-            searchResult.title = getContent(element, "title");
-            searchResult.link = getContent(element, "link");
-            searchResult.snippet = getContent(element, "description");
+            searchResult.setTitle(getContent(element, "title"));
+            searchResult.setLink(getContent(element, "link"));
+            searchResult.setSnippet(getContent(element, "description"));
             
             searchResultList.add(searchResult);
             
@@ -221,9 +221,9 @@ public class NaverAPI implements SearchAPI
             
             TextSearchResult searchResult = new TextSearchResult();
             
-            searchResult.title = getContent(element, "title");
-            searchResult.link = getContent(element, "link");
-            searchResult.snippet = getContent(element, "description");
+            searchResult.setTitle(getContent(element, "title"));
+            searchResult.setLink(getContent(element, "link"));
+            searchResult.setSnippet(getContent(element, "description"));
             
             searchResultList.add(searchResult);
         }
@@ -245,9 +245,9 @@ public class NaverAPI implements SearchAPI
             
             TextSearchResult searchResult = new TextSearchResult();
             
-            searchResult.title = getContent(element, "title");
-            searchResult.link = getContent(element, "link");
-            searchResult.snippet = getContent(element, "description");
+            searchResult.setTitle(getContent(element, "title"));
+            searchResult.setLink(getContent(element, "link"));
+            searchResult.setSnippet(getContent(element, "description"));
             
             searchResultList.add(searchResult);
         }
@@ -266,10 +266,13 @@ public class NaverAPI implements SearchAPI
         {
             Element element = (Element) list.item(i);
             TextSearchResult searchResult = new TextSearchResult();
+             
             
-            searchResult.title = getContent(element, "title");
-            searchResult.link = getContent(element, "originallink");
-            searchResult.snippet = getContent(element, "description");
+            searchResult.setTitle(getContent(element, "title"));
+            searchResult.setLink(getContent(element, "originallink"));
+            searchResult.setSnippet(getContent(element, "description"));
+            
+            
             searchResultList.add(searchResult);
         }
         
