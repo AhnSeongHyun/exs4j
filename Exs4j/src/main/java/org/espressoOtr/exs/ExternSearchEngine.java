@@ -67,11 +67,9 @@ public class ExternSearchEngine
             
             else
                 exsMode = ExsMode.NONE;
-            
         }
         else
-        {
             exsMode = ExsMode.NONE;
-        }
+        
     }
 }
