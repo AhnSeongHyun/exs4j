@@ -38,7 +38,8 @@ public class ConfigurationReader
             
             for (String confData : confDatas)
             {
-                confKv.put(fs.splitToArray(confData)[0], fs.splitToArray(confData)[1].replace("\"", ""));
+            	if(confData.length()>0)
+            		confKv.put(fs.splitToArray(confData)[0], fs.splitToArray(confData)[1].replace("\"", ""));
             }
             
         }
