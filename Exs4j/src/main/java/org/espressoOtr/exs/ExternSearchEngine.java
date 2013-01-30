@@ -55,7 +55,7 @@ public class ExternSearchEngine
     
     public static void showUsage()
     {
-        logger.info("exs4j : java -jar exs4j.jar -server [config file path]");
+        logger.info("Exs4j : java -jar Exs4j.jar -server [config file path]");
     }
     
     public static void getExsMode(String[] args)

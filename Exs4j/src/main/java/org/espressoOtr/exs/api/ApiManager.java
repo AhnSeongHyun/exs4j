@@ -1,5 +1,5 @@
 package org.espressoOtr.exs.api;
- 
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,8 +58,7 @@ public class ApiManager
         api.setPageNo(pageNo);
         api.request(keyword);
         
-    }  
-
+    }
     
     private void switchSearchAPI(String service, String target)
     {
@@ -75,7 +74,7 @@ public class ApiManager
         else if (SearchEngines.BING.toString().equals(service.toUpperCase()))
         {
             api = setBingSearchEngine(target);
-        } 
+        }
         else
         {
             api = null;
@@ -85,7 +84,7 @@ public class ApiManager
     
     private SearchApi setNaverSearchEngine(String target)
     {
-        NaverApi naverApi = (NaverApi)this.apiMap.get("NAVER");
+        NaverApi naverApi = (NaverApi) this.apiMap.get("NAVER");
         
         if (NaverApiTarget.BLOG.toString().equals(target.toUpperCase()))
         {
@@ -114,8 +113,8 @@ public class ApiManager
     
     private SearchApi setDaumSearchEngine(String target)
     {
-        DaumApi daumApi = (DaumApi)this.apiMap.get("DAUM");
-         
+        DaumApi daumApi = (DaumApi) this.apiMap.get("DAUM");
+        
         if (DaumApiTarget.BLOG.toString().equals(target.toUpperCase()))
         {
             daumApi.setTarget(DaumApiTarget.BLOG);
@@ -138,7 +137,7 @@ public class ApiManager
     
     private SearchApi setBingSearchEngine(String target)
     {
-        BingApi bingApi = (BingApi)this.apiMap.get("BING");
+        BingApi bingApi = (BingApi) this.apiMap.get("BING");
         return bingApi;
     }
     
