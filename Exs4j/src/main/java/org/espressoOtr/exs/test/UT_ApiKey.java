@@ -2,11 +2,11 @@ package org.espressoOtr.exs.test;
 
 import static org.junit.Assert.*;
 
-import org.espressoOtr.exs.api.bing.BingAPI;
-import org.espressoOtr.exs.api.daum.DaumAPI;
-import org.espressoOtr.exs.api.daum.DaumAPITarget;
-import org.espressoOtr.exs.api.naver.NaverAPI;
-import org.espressoOtr.exs.api.naver.NaverAPITarget;
+import org.espressoOtr.exs.api.bing.BingApi;
+import org.espressoOtr.exs.api.daum.DaumApi;
+import org.espressoOtr.exs.api.daum.DaumApiTarget;
+import org.espressoOtr.exs.api.naver.NaverApi;
+import org.espressoOtr.exs.api.naver.NaverApiTarget;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,8 +25,8 @@ public class UT_ApiKey
     @Test
     public void test_NaverKey()
     {
-        NaverAPI naverApi = new NaverAPI();
-        naverApi.setTarget(NaverAPITarget.NEWS);
+        NaverApi naverApi = new NaverApi();
+        naverApi.setTarget(NaverApiTarget.NEWS);
         
         naverApi.request("python");
         assertEquals(10, naverApi.response().size());
@@ -36,8 +36,8 @@ public class UT_ApiKey
     @Test
     public void test_DaumKey()
     {
-        DaumAPI daumApi = new DaumAPI();
-        daumApi.setTarget(DaumAPITarget.BLOG);
+        DaumApi daumApi = new DaumApi();
+        daumApi.setTarget(DaumApiTarget.BLOG);
         
         daumApi.request("python");
         assertEquals(10, daumApi.response().size());
@@ -46,7 +46,7 @@ public class UT_ApiKey
     @Test
     public void test_BingKey()
     {
-        BingAPI bingApi = new BingAPI();
+        BingApi bingApi = new BingApi();
         bingApi.request("python");
         assertEquals(10, bingApi.response().size());
         

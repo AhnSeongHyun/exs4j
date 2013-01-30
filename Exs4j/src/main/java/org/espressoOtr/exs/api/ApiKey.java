@@ -2,14 +2,17 @@ package org.espressoOtr.exs.api;
 
 import java.util.Random;
 
-import org.espressoOtr.exs.api.bing.BingAPI;
-import org.espressoOtr.exs.api.daum.DaumAPI;
-import org.espressoOtr.exs.api.naver.NaverAPI;
+import org.espressoOtr.exs.api.bing.BingApi;
+import org.espressoOtr.exs.api.daum.DaumApi;
+import org.espressoOtr.exs.api.naver.NaverApi;
+import org.espressoOtr.exs.common.Properties;
+import org.espressootr.lib.utils.InitUtil;
 
 public class ApiKey
 {
     
-    private String APIKEY = null;
+    private String APIKEY = null; 
+    
     
     public ApiKey(Object classType)
     {
@@ -18,21 +21,22 @@ public class ApiKey
     
     private String getKeyString(Object classType)
     { 
-        String apiKey = "";
+        String apiKey = InitUtil.EMPTY_STRING;
+        String propertyKey = InitUtil.EMPTY_STRING;
         
-        String propertyKey = "";
-        if (classType.getClass() == NaverAPI.class)
+        
+        if (classType.getClass() == NaverApi.class)
         {
-            propertyKey = "naver_key";
+            propertyKey = Properties.NAVER_KEY;
         }
-        else if (classType.getClass() == DaumAPI.class)
+        else if (classType.getClass() == DaumApi.class)
         {
-            propertyKey = "daum_key";
+            propertyKey = Properties.DAUM_KEY;
                    
         }
-        else if (classType.getClass() == BingAPI.class)
+        else if (classType.getClass() == BingApi.class)
         {
-            propertyKey = "bing_key";
+            propertyKey = Properties.BING_KEY;
         }
         
         apiKey = getRandomKey(System.getProperty(propertyKey));

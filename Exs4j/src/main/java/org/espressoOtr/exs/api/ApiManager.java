@@ -1,55 +1,37 @@
 package org.espressoOtr.exs.api;
-
+ 
+import java.util.HashMap;
 import java.util.List;
 
-import org.espressoOtr.exs.api.bing.BingAPI;
-import org.espressoOtr.exs.api.daum.DaumAPI;
-import org.espressoOtr.exs.api.daum.DaumAPITarget;
-import org.espressoOtr.exs.api.naver.NaverAPI;
-import org.espressoOtr.exs.api.naver.NaverAPITarget;
+import org.espressoOtr.exs.api.bing.BingApi;
+import org.espressoOtr.exs.api.daum.DaumApi;
+import org.espressoOtr.exs.api.daum.DaumApiTarget;
+import org.espressoOtr.exs.api.naver.NaverApi;
+import org.espressoOtr.exs.api.naver.NaverApiTarget;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ApiManager
 {
-    SearchAPI api = null;
+    SearchApi api = null;
     
     int currentOutputCount = 5;
+    
     Logger logger = LoggerFactory.getLogger(ApiManager.class);
+    
+    HashMap<String, SearchApi> apiMap = null;
     
     public ApiManager()
     {
+        apiMap = new HashMap<String, SearchApi>(3);
         
+        apiMap.put("NAVER", new NaverApi());
+        apiMap.put("DAUM", new DaumApi());
+        apiMap.put("BING", new BingApi());
     }
     
-    public String[] splitDomain(String domain)
-    {
-        String[] domainSplitted = new String[2];
-        
-        StringBuffer buf = new StringBuffer();
-        char[] domainChars = domain.toCharArray();
-        
-        for (int i = 0; i < domainChars.length; i++)
-        {
-            if (domainChars[i] == '.')
-            {
-                domainSplitted[0] = buf.toString();
-                
-                buf.delete(0, buf.length());
-            }
-            else
-            {
-                buf.append(domainChars[i]);
-            }
-        }
-        
-        domainSplitted[1] = buf.toString();
-        
-        return domainSplitted;
-    }
-    
-    public void request(String domain, String keyword, int outputCount, int pageNo)
+    public void request(String domain, String keyword, int outputCount, int pageNo) throws Exception
     {
         
         String[] domainSplitted = domain.split("[.]");
@@ -60,6 +42,10 @@ public class ApiManager
         if (domainSplitted.length > 1)
         {
             target = domainSplitted[1].trim();
+        }
+        else
+        {
+            throw new Exception("invalid domain");
         }
         
         logger.info("service :{} ", service);
@@ -72,7 +58,8 @@ public class ApiManager
         api.setPageNo(pageNo);
         api.request(keyword);
         
-    }
+    }  
+
     
     private void switchSearchAPI(String service, String target)
     {
@@ -88,8 +75,7 @@ public class ApiManager
         else if (SearchEngines.BING.toString().equals(service.toUpperCase()))
         {
             api = setBingSearchEngine(target);
-        }
-        
+        } 
         else
         {
             api = null;
@@ -97,63 +83,62 @@ public class ApiManager
         
     }
     
-    private static SearchAPI setNaverSearchEngine(String target)
+    private SearchApi setNaverSearchEngine(String target)
     {
-        NaverAPI naverApi = new NaverAPI();
+        NaverApi naverApi = (NaverApi)this.apiMap.get("NAVER");
         
-        if (NaverAPITarget.BLOG.toString().equals(target.toUpperCase()))
+        if (NaverApiTarget.BLOG.toString().equals(target.toUpperCase()))
         {
-            naverApi.setTarget(NaverAPITarget.BLOG);
+            naverApi.setTarget(NaverApiTarget.BLOG);
         }
-        else if (NaverAPITarget.CAFEARTICLE.toString().equals(target.toUpperCase()))
+        else if (NaverApiTarget.CAFEARTICLE.toString().equals(target.toUpperCase()))
         {
-            naverApi.setTarget(NaverAPITarget.CAFEARTICLE);
+            naverApi.setTarget(NaverApiTarget.CAFEARTICLE);
         }
-        else if (NaverAPITarget.NEWS.toString().equals(target.toUpperCase()))
+        else if (NaverApiTarget.NEWS.toString().equals(target.toUpperCase()))
         {
-            naverApi.setTarget(NaverAPITarget.NEWS);
+            naverApi.setTarget(NaverApiTarget.NEWS);
         }
-        else if (NaverAPITarget.WEBKR.toString().equals(target.toUpperCase()))
+        else if (NaverApiTarget.WEBKR.toString().equals(target.toUpperCase()))
         {
-            naverApi.setTarget(NaverAPITarget.WEBKR);
+            naverApi.setTarget(NaverApiTarget.WEBKR);
         }
         else
         {
-            naverApi.setTarget(NaverAPITarget.WEBKR);
+            naverApi.setTarget(NaverApiTarget.WEBKR);
         }
         
         return naverApi;
         
     }
     
-    private static SearchAPI setDaumSearchEngine(String target)
+    private SearchApi setDaumSearchEngine(String target)
     {
-        DaumAPI daumApi = new DaumAPI();
-        daumApi.setTarget(DaumAPITarget.WEB);
-        
-        if (DaumAPITarget.BLOG.toString().equals(target.toUpperCase()))
+        DaumApi daumApi = (DaumApi)this.apiMap.get("DAUM");
+         
+        if (DaumApiTarget.BLOG.toString().equals(target.toUpperCase()))
         {
-            daumApi.setTarget(DaumAPITarget.BLOG);
+            daumApi.setTarget(DaumApiTarget.BLOG);
         }
-        else if (DaumAPITarget.CAFE.toString().equals(target.toUpperCase()))
+        else if (DaumApiTarget.CAFE.toString().equals(target.toUpperCase()))
         {
-            daumApi.setTarget(DaumAPITarget.CAFE);
+            daumApi.setTarget(DaumApiTarget.CAFE);
         }
-        else if (DaumAPITarget.WEB.toString().equals(target.toUpperCase()))
+        else if (DaumApiTarget.WEB.toString().equals(target.toUpperCase()))
         {
-            daumApi.setTarget(DaumAPITarget.WEB);
+            daumApi.setTarget(DaumApiTarget.WEB);
         }
         else
         {
-            daumApi.setTarget(DaumAPITarget.WEB);
+            daumApi.setTarget(DaumApiTarget.WEB);
         }
         
         return daumApi;
     }
     
-    private static SearchAPI setBingSearchEngine(String target)
+    private SearchApi setBingSearchEngine(String target)
     {
-        BingAPI bingApi = new BingAPI();
+        BingApi bingApi = (BingApi)this.apiMap.get("BING");
         return bingApi;
     }
     

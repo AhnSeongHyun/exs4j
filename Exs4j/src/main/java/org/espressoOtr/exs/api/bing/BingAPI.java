@@ -9,13 +9,13 @@ import net.billylieurance.azuresearch.AzureSearchWebQuery;
 import net.billylieurance.azuresearch.AzureSearchWebResult;
 
 import org.espressoOtr.exs.api.ApiKey;
-import org.espressoOtr.exs.api.SearchAPI;
+import org.espressoOtr.exs.api.SearchApi;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BingAPI implements SearchAPI
+public class BingApi implements SearchApi
 {
     
     private List<SearchResult> searchResultList = Collections.emptyList();
@@ -32,22 +32,21 @@ public class BingAPI implements SearchAPI
     
     private int pageNo = pageNoDefault; // default
     
-    Logger logger = LoggerFactory.getLogger(BingAPI.class);
+    Logger logger = LoggerFactory.getLogger(BingApi.class);
     
-    public BingAPI(ApiKey bingApiKey)
+    public BingApi(ApiKey bingApiKey)
     {
         this.apiKey = bingApiKey;
     }
     
-    public BingAPI()
+    public BingApi()
     {
-        this.apiKey = new ApiKey(this);
-        System.out.println(this.apiKey.getKey());
+        this.apiKey = new ApiKey(this); 
     }
     
     public void request(String keyword)
     {
-        logger.info(BingAPI.class.getName() + " KEYWORD : " + keyword);
+        logger.info(BingApi.class.getName() + " KEYWORD : " + keyword);
         
         try
         {
@@ -99,7 +98,7 @@ public class BingAPI implements SearchAPI
     
     public List<SearchResult> response()
     {
-        logger.debug(BingAPI.class.getName() + " result : " + this.searchResultList.size());
+        logger.debug(BingApi.class.getName() + " result : " + this.searchResultList.size());
         
         return this.searchResultList;
     }

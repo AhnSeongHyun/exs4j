@@ -3,6 +3,7 @@ package org.espressoOtr.exs.server;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
+import org.espressoOtr.exs.common.Properties;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -20,7 +21,7 @@ public class ExsServer
     
     public ExsServer()
     {
-        this.port = Integer.parseInt(System.getProperty("port"));
+        this.port = Integer.parseInt(System.getProperty(Properties.PORT));
     }
     
     public void run()

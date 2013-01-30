@@ -46,7 +46,7 @@ public class ExsServerHandler extends SimpleChannelHandler
     }
     
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
+    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception
     {
         ChannelBuffer request = (ChannelBuffer) e.getMessage();
         

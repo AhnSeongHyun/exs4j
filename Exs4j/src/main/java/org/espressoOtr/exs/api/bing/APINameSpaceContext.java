@@ -9,7 +9,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 // Map prefixes to Namespace URIs
-public class APINameSpaceContext implements NamespaceContext 
+public class ApiNameSpaceContext implements NamespaceContext 
 {
 	static final String WEB_NAMESPACE =  "http://schemas.microsoft.com/LiveSearch/2008/04/XML/web";
 	static final String API_NAMESPACE = "http://schemas.microsoft.com/LiveSearch/2008/04/XML/element";

@@ -1,6 +1,6 @@
 package org.espressoOtr.exs.api.daum;
 
-public enum DaumAPITarget
+public enum DaumApiTarget
 {
     
     BLOG, WEB, CAFE

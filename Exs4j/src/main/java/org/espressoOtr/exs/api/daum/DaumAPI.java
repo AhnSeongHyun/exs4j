@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.espressoOtr.exs.api.ApiKey;
-import org.espressoOtr.exs.api.SearchAPI;
+import org.espressoOtr.exs.api.SearchApi;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult; 
 import org.espressootr.lib.utils.InitUtil;
@@ -22,12 +22,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class DaumAPI implements SearchAPI
+public class DaumApi implements SearchApi
 {
     
     private String uri = InitUtil.EMPTY_STRING;
     
-    private DaumAPITarget target;
+    private DaumApiTarget target;
     
     private List<SearchResult> searchResultList = Collections.emptyList();
     private ApiKey apiKey = null;
@@ -44,26 +44,26 @@ public class DaumAPI implements SearchAPI
     private int pageNo = pageNoDefault; // default
     
 
-    Logger logger = LoggerFactory.getLogger(DaumAPI.class);
+    Logger logger = LoggerFactory.getLogger(DaumApi.class);
     
     
-    public DaumAPI(ApiKey daumApiKey)
+    public DaumApi(ApiKey daumApiKey)
     {
         this.apiKey = daumApiKey;
     }
     
-    public DaumAPI()
+    public DaumApi()
     {
         this.apiKey = new ApiKey(this);
     }
     
-    public void setTarget(DaumAPITarget target)
+    public void setTarget(DaumApiTarget target)
     {
         
         this.target = target;
     }
     
-    public DaumAPITarget getTarget()
+    public DaumApiTarget getTarget()
     {
         return this.target;
         
@@ -73,15 +73,15 @@ public class DaumAPI implements SearchAPI
     {
         String targetString = InitUtil.EMPTY_STRING;
         
-        if (getTarget() == DaumAPITarget.BLOG)
+        if (getTarget() == DaumApiTarget.BLOG)
         {
             targetString = "blog";
         }
-        else if (getTarget() == DaumAPITarget.CAFE)
+        else if (getTarget() == DaumApiTarget.CAFE)
         {
             targetString = "cafe";
         }
-        else if (getTarget() == DaumAPITarget.WEB)
+        else if (getTarget() == DaumApiTarget.WEB)
         {
             targetString = "web";
         }
@@ -93,7 +93,7 @@ public class DaumAPI implements SearchAPI
     public void request(String keyword)
     {
         
-        logger.info(DaumAPI.class.getName() + " KEYWORD : " + "'" + keyword + "'");
+        logger.info(DaumApi.class.getName() + " KEYWORD : " + "'" + keyword + "'");
         
         try
         {
@@ -135,18 +135,18 @@ public class DaumAPI implements SearchAPI
         String subURI = InitUtil.EMPTY_STRING;
         String output = "xml";
         
-        if (getTarget() == DaumAPITarget.BLOG)
+        if (getTarget() == DaumApiTarget.BLOG)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
             
         }
         
-        else if (getTarget() == DaumAPITarget.WEB)
+        else if (getTarget() == DaumApiTarget.WEB)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&output=" + output;
             
         }
-        else if (getTarget() == DaumAPITarget.CAFE)
+        else if (getTarget() == DaumApiTarget.CAFE)
         {
             subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
             
@@ -200,7 +200,7 @@ public class DaumAPI implements SearchAPI
     public List<SearchResult> response()
     {
         
-        logger.debug(DaumAPI.class.getName() + " result : " + this.searchResultList.size());
+        logger.debug(DaumApi.class.getName() + " result : " + this.searchResultList.size());
          
         return this.searchResultList;
         

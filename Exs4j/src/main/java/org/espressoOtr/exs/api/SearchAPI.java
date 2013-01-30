@@ -6,7 +6,7 @@ import org.espressoOtr.exs.api.result.SearchResult;
 
 
 
-public interface SearchAPI  
+public interface SearchApi  
 { 
     public void request(String keyword);
     public List<SearchResult> response();
