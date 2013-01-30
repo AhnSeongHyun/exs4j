@@ -2,7 +2,7 @@ package org.espressoOtr.exs.test;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.PropertyConfigurator;
+
 import org.espressoOtr.exs.api.ApiManager;
 import org.junit.Before;
 import org.junit.Test;
