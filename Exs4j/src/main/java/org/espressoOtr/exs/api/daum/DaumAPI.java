@@ -13,7 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.espressoOtr.exs.api.ApiKey;
 import org.espressoOtr.exs.api.SearchApi;
 import org.espressoOtr.exs.api.result.SearchResult;
-import org.espressoOtr.exs.api.result.TextSearchResult; 
+import org.espressoOtr.exs.api.result.TextSearchResult;
+import org.espressootr.lib.string.StringAppender;
 import org.espressootr.lib.utils.InitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,22 +31,24 @@ public class DaumApi implements SearchApi
     private DaumApiTarget target;
     
     private List<SearchResult> searchResultList = Collections.emptyList();
+    
     private ApiKey apiKey = null;
     
     private String sort = "date";
     
     private int outputCountLimit = 50;
+    
     private int outputCountDefault = 10;
     
     private int pageNoLimit = 500;
+    
     private int pageNoDefault = 1;
     
     private int outputCount = outputCountDefault; // default.
+    
     private int pageNo = pageNoDefault; // default
     
-
     Logger logger = LoggerFactory.getLogger(DaumApi.class);
-    
     
     public DaumApi(ApiKey daumApiKey)
     {
@@ -123,8 +126,17 @@ public class DaumApi implements SearchApi
     
     private String getURI(String keyword) throws IOException
     {
-        String createdUri = "http://apis.daum.net/search/" + getTargetString() + "?q=" + URLEncoder.encode(keyword, "UTF-8") + this.getSubURI()
-                + "&apikey=" + this.apiKey.getKey();
+        
+        String subUri = getSubURI();
+        
+        String createdUri = StringAppender.mergeToStr("http://apis.daum.net/search/", getTargetString(), "?q=", URLEncoder.encode(keyword, "UTF-8"), subUri, "&apikey=", this.apiKey.getKey()
+        
+        );
+        
+        // String createdUri = "http://apis.daum.net/search/" +
+        // getTargetString() + "?q=" + URLEncoder.encode(keyword, "UTF-8") +
+        // this.getSubURI()
+        // + "&apikey=" + this.apiKey.getKey();
         
         return createdUri;
     }
@@ -132,27 +144,36 @@ public class DaumApi implements SearchApi
     private String getSubURI()
     {
         
-        String subURI = InitUtil.EMPTY_STRING;
-        String output = "xml";
+        StringBuilder subUriSb = new StringBuilder();
+         
+        
+        subUriSb.append("&reuslt");
+        subUriSb.append(String.valueOf(this.outputCount));
+        subUriSb.append("&pageno=");
+        subUriSb.append(String.valueOf(this.pageNo));
         
         if (getTarget() == DaumApiTarget.BLOG)
         {
-            subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
-            
-        }
-        
-        else if (getTarget() == DaumApiTarget.WEB)
-        {
-            subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&output=" + output;
+            // subURI = "&result=" + String.valueOf(this.outputCount) +
+            // "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort +
+            // "&output=" + output;
+            subUriSb.append("&sort=");
+            subUriSb.append(sort);
             
         }
         else if (getTarget() == DaumApiTarget.CAFE)
         {
-            subURI = "&result=" + String.valueOf(this.outputCount) + "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort + "&output=" + output;
+            // subURI = "&result=" + String.valueOf(this.outputCount) +
+            // "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort +
+            // "&output=" + output;
+            subUriSb.append("&sort=");
+            subUriSb.append(sort);
             
         }
         
-        return subURI;
+        subUriSb.append("&output=xml");
+        
+        return subUriSb.toString();
     }
     
     private List<SearchResult> parseDOM(Document doc)
@@ -167,12 +188,10 @@ public class DaumApi implements SearchApi
             Element element = (Element) list.item(i);
             
             TextSearchResult searchResult = new TextSearchResult();
-             
             
             searchResult.setTitle(getContent(element, "title"));
             searchResult.setLink(getContent(element, "link"));
             searchResult.setSnippet(getContent(element, "description"));
-            
             
             searchResultList.add(searchResult);
             
@@ -201,7 +220,7 @@ public class DaumApi implements SearchApi
     {
         
         logger.debug(DaumApi.class.getName() + " result : " + this.searchResultList.size());
-         
+        
         return this.searchResultList;
         
     }

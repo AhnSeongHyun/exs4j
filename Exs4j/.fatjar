@@ -1,14 +1,14 @@
 #Fat Jar Configuration File
-#Wed Jan 30 11:00:15 KST 2013
+#Thu Jan 31 10:01:53 KST 2013
 onejar.license.required=true
 manifest.classpath=
-manifest.removesigners=true
+manifest.removesigners=false
 onejar.checkbox=false
 jarname=Exs4j.jar
-manifest.mergeall=true
+manifest.mergeall=false
 manifest.mainclass=org.espressoOtr.exs.ExternSearchEngine
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
-excludes=<jar|junit-4.0.jar>
+excludes=<jar|netty-3.6.1.Final.jar>;<jar|gson-2.2.2.jar>;<jar|slf4j-api-1.6.1.jar>;<jar|slf4j-log4j12-1.6.1.jar>;<jar|log4j-1.2.16.jar>;<jar|junit-4.0.jar>;<jar|fluent-hc-4.2.3.jar>;<jar|httpclient-4.2.3.jar>;<jar|httpcore-4.2.2.jar>;<jar|commons-codec-1.6.jar>;<jar|commons-logging-1.1.1.jar>
 includes=

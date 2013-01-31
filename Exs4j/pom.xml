@@ -17,12 +17,13 @@
         <configuration>
           <archive>
             <manifest>
+         
               <mainClass>org.espressoOtr.exs.ExternSearchEngine</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
- 
+       
       </plugins>
   </build>
   

@@ -11,9 +11,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.espressoOtr.exs.api.ApiKey;
-import org.espressoOtr.exs.api.SearchApi; 
+import org.espressoOtr.exs.api.SearchApi;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult;
+import org.espressootr.lib.string.StringAppender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +37,15 @@ public class NaverApi implements SearchApi
     private String sort = "date";
     
     private int outputCountDefault = 10;
+    
     private int outputCountLimit = 100;
     
     private int pageNoDefault = 1;
+    
     private int pageNoLimit = 1000;
     
     private int outputCount = outputCountDefault;// default
+    
     private int pageNo = pageNoDefault; // default
     
     Logger logger = LoggerFactory.getLogger(NaverApi.class);
@@ -124,9 +128,11 @@ public class NaverApi implements SearchApi
     
     private String getURI(String keyword) throws IOException
     {
+        String subUri = getSubURI();
         
-        String createdUri = "http://openapi.naver.com/search?key=" + this.apiKey.getKey() + "&target=" + this.getTargetString() + "&query="
-                + URLEncoder.encode(keyword, "UTF-8") + getSubURI();
+        String createdUri = StringAppender.mergeToStr("http://openapi.naver.com/search?key=", this.apiKey.getKey(), "&target=", this.getTargetString(), "&query=", URLEncoder.encode(keyword, "UTF-8"), subUri);
+        
+        //String createdUri = "http://openapi.naver.com/search?key=" + this.apiKey.getKey() + "&target=" + this.getTargetString() + "&query=" + URLEncoder.encode(keyword, "UTF-8") + getSubURI();
         
         return createdUri;
     }
@@ -134,29 +140,47 @@ public class NaverApi implements SearchApi
     private String getSubURI()
     {
         
-        String subURI = "";
+        StringBuilder subUriSb = new StringBuilder();
+        
+        subUriSb.append("&display=");
+        subUriSb.append(String.valueOf(this.outputCount));
+        subUriSb.append("&start=");
+        subUriSb.append(String.valueOf(this.pageNo));
+        
         if (getTarget() == NaverApiTarget.BLOG)
         {
-            subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
+            // subURI = "&display=" + String.valueOf(this.outputCount) +
+            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
+            subUriSb.append("&sort=");
+            subUriSb.append(this.sort);
+            
         }
         
         else if (getTarget() == NaverApiTarget.CAFEARTICLE)
         {
-            subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
+            // subURI = "&display=" + String.valueOf(this.outputCount) +
+            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
+            subUriSb.append("&sort=");
+            subUriSb.append(this.sort);
             
         }
         else if (getTarget() == NaverApiTarget.NEWS)
         {
-            subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
-            
-        }
-        else if (getTarget() == NaverApiTarget.WEBKR)
-        {
-            subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" + String.valueOf(this.pageNo);
-            
+            // subURI = "&display=" + String.valueOf(this.outputCount) +
+            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
+            subUriSb.append("&sort=");
+            subUriSb.append(this.sort);
         }
         
-        return subURI;
+        // else if (getTarget() == NaverApiTarget.WEBKR)
+        // {
+        // subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" +
+        // String.valueOf(this.pageNo);
+        //
+        // }
+        
+        return subUriSb.toString();
+        
     }
     
     private List<SearchResult> parseDOM(Document doc)
@@ -266,12 +290,10 @@ public class NaverApi implements SearchApi
         {
             Element element = (Element) list.item(i);
             TextSearchResult searchResult = new TextSearchResult();
-             
             
             searchResult.setTitle(getContent(element, "title"));
             searchResult.setLink(getContent(element, "originallink"));
             searchResult.setSnippet(getContent(element, "description"));
-            
             
             searchResultList.add(searchResult);
         }
@@ -298,7 +320,7 @@ public class NaverApi implements SearchApi
     public List<SearchResult> response()
     {
         logger.debug(NaverApi.class.getName() + " result : " + this.searchResultList.size());
-         
+        
         return this.searchResultList;
     }
     
@@ -346,7 +368,7 @@ public class NaverApi implements SearchApi
     
     @Override
     public void setPageNo(int pageNo)
-    { 
+    {
         if (pageNo > this.pageNoLimit)
         {
             this.pageNo = this.pageNoDefault;
