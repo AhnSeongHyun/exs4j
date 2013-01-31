@@ -6,12 +6,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.espressoOtr.exs.api.ApiKey;
 import org.espressoOtr.exs.api.SearchApi;
+import org.espressoOtr.exs.api.naver.data.NaverBlogData;
+import org.espressoOtr.exs.api.naver.data.NaverCafeArticleData;
+import org.espressoOtr.exs.api.naver.data.NaverData;
+import org.espressoOtr.exs.api.naver.data.NaverNewsData;
+import org.espressoOtr.exs.api.naver.data.NaverWebKrData;
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult;
 import org.espressootr.lib.string.StringAppender;
@@ -22,6 +37,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 public class NaverApi implements SearchApi
 {
@@ -117,13 +133,73 @@ public class NaverApi implements SearchApi
     {
         
         uri = getURI(keyword);
+
+
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpGet = null;
+        String apiString = "";
         
+         
+        
+        NaverData obj = null; 
+        try
+        { 
+            httpGet = new HttpGet(uri);
+            HttpResponse response = httpclient.execute(httpGet);
+            StatusLine status = response.getStatusLine();
+            
+            if (status.getStatusCode() == HttpStatus.SC_OK)
+            {
+                HttpEntity entity1 = response.getEntity();
+                
+                Source source = new StreamSource(entity1.getContent());
+                
+                JAXBContext jc =null; 
+                
+                if(this.getTarget() == NaverApiTarget.BLOG)
+                    jc = JAXBContext.newInstance(NaverBlogData.class);
+                else if(this.getTarget() == NaverApiTarget.CAFEARTICLE)
+                    jc = JAXBContext.newInstance(NaverCafeArticleData.class);
+                    
+                else if(this.getTarget() == NaverApiTarget.WEBKR)
+                    jc = JAXBContext.newInstance(NaverWebKrData.class);
+                
+                else if(this.getTarget() == NaverApiTarget.NEWS)
+                    jc = JAXBContext.newInstance(NaverNewsData.class);
+                            
+                    
+                
+                Unmarshaller unmarshaller = jc.createUnmarshaller();
+                
+                obj = (NaverData) unmarshaller.unmarshal(source);
+            }
+            else
+            {
+                throw new Exception("HTTP Response Status Code : "+ status.getStatusCode());
+            }
+            
+        }
+        catch (Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+        finally
+        {
+            httpGet.releaseConnection();
+        }
+        
+        this.searchResultList = obj.toSearchResult();
+        
+        ////
+        /* previous parsing logic
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document doc = builder.parse(uri);
         
         this.searchResultList = parseDOM(doc);
+        */ 
     }
     
     private String getURI(String keyword) throws IOException

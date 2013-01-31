@@ -23,21 +23,48 @@ public class UT_ApiManager
     }
     
     @Test
-    public void test() throws Exception
+    public void test_naver_blog() throws Exception
     {
         apiManager.request("NAVER.BLOG", "twitter log", 3, 1);
-        assertEquals(3, apiManager.response().size());
-        
-        apiManager.request("DAUM.CAFE", "twitter log", 3, 1);
-        assertEquals(3, apiManager.response().size());
-        
-        apiManager.request("NAVER.WEBKR", "twitter log", 3, 1);
-        assertEquals(3, apiManager.response().size());
-        
-        apiManager.request("NAVER.CAFEARTICLE", "twitter log", 3, 1);
-        assertEquals(3, apiManager.response().size());
-         
-        
+        assertEquals(3, apiManager.response().size()); 
     }
+    
+    @Test
+    public void test_naver_cafe_article() throws Exception
+    {
+        apiManager.request("NAVER.CAFEARTICLE", "twitter log", 3, 1);
+        assertEquals(3, apiManager.response().size()); 
+    }
+    
+    
+    
+    @Test
+    public void test_naver_webkr() throws Exception
+    {
+        apiManager.request("NAVER.WEBKR", "twitter log", 3, 1);
+        assertEquals(3, apiManager.response().size()); 
+    }
+    
+    
+    
+    
+    @Test
+    public void test_naver_news() throws Exception
+    {
+        apiManager.request("NAVER.NEWS", "twitter log", 3, 1);
+        assertEquals(3, apiManager.response().size()); 
+    }
+     
+    @Test
+    public void test_daum_cafe() throws Exception
+    { 
+        apiManager.request("DAUM.CAFE", "twitter log", 3, 1);
+        assertEquals(3, apiManager.response().size()); 
+     
+    }
+    
+    
+ 
+    
     
 }
