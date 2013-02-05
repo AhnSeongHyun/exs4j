@@ -12,9 +12,7 @@ public class TestBingApi
     
     @Before
     public void setUp() throws Exception
-    {  
-        
-        
+    {   
         System.setProperty("naver_key", "776db691996584df9385aa576bd4dcef");
         System.setProperty("daum_key", "ffb014a6c553ddd4e93ce7af11ba075a75dd8e34");
         System.setProperty("bing_key", "XewnW370WT5kdz9ECFie99d5miv/2777Hg0dt0kBp10=");

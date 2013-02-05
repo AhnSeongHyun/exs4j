@@ -2,8 +2,7 @@ package org.espressoOtr.exs.api.bing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
+import java.util.List; 
 import net.billylieurance.azuresearch.AzureSearchResultSet;
 import net.billylieurance.azuresearch.AzureSearchWebQuery;
 import net.billylieurance.azuresearch.AzureSearchWebResult;

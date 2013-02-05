@@ -24,6 +24,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/azure-bing-search-java-0.12.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
