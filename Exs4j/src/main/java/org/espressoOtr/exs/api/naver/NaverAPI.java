@@ -2,14 +2,11 @@ package org.espressoOtr.exs.api.naver;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -28,16 +25,11 @@ import org.espressoOtr.exs.api.naver.data.NaverData;
 import org.espressoOtr.exs.api.naver.data.NaverNewsData;
 import org.espressoOtr.exs.api.naver.data.NaverWebKrData;
 import org.espressoOtr.exs.api.result.SearchResult;
-import org.espressoOtr.exs.api.result.TextSearchResult;
 import org.espressootr.lib.string.StringAppender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 
 public class NaverApi implements SearchApi
 {
@@ -133,17 +125,13 @@ public class NaverApi implements SearchApi
     {
         
         uri = getURI(keyword);
-
-
+        
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpGet httpGet = null;
-        String apiString = "";
         
-         
-        
-        NaverData obj = null; 
+        NaverData obj = null;
         try
-        { 
+        {
             httpGet = new HttpGet(uri);
             HttpResponse response = httpclient.execute(httpGet);
             StatusLine status = response.getStatusLine();
@@ -154,20 +142,17 @@ public class NaverApi implements SearchApi
                 
                 Source source = new StreamSource(entity1.getContent());
                 
-                JAXBContext jc =null; 
+                JAXBContext jc = null;
                 
-                if(this.getTarget() == NaverApiTarget.BLOG)
+                if (this.getTarget() == NaverApiTarget.BLOG)
                     jc = JAXBContext.newInstance(NaverBlogData.class);
-                else if(this.getTarget() == NaverApiTarget.CAFEARTICLE)
+                else if (this.getTarget() == NaverApiTarget.CAFEARTICLE)
                     jc = JAXBContext.newInstance(NaverCafeArticleData.class);
-                    
-                else if(this.getTarget() == NaverApiTarget.WEBKR)
+                
+                else if (this.getTarget() == NaverApiTarget.WEBKR)
                     jc = JAXBContext.newInstance(NaverWebKrData.class);
                 
-                else if(this.getTarget() == NaverApiTarget.NEWS)
-                    jc = JAXBContext.newInstance(NaverNewsData.class);
-                            
-                    
+                else if (this.getTarget() == NaverApiTarget.NEWS) jc = JAXBContext.newInstance(NaverNewsData.class);
                 
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
                 
@@ -175,7 +160,7 @@ public class NaverApi implements SearchApi
             }
             else
             {
-                throw new Exception("HTTP Response Status Code : "+ status.getStatusCode());
+                throw new Exception("HTTP Response Status Code : " + status.getStatusCode());
             }
             
         }
@@ -191,24 +176,14 @@ public class NaverApi implements SearchApi
         
         this.searchResultList = obj.toSearchResult();
         
-        ////
-        /* previous parsing logic
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        
-        DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document doc = builder.parse(uri);
-        
-        this.searchResultList = parseDOM(doc);
-        */ 
     }
     
     private String getURI(String keyword) throws IOException
     {
         String subUri = getSubURI();
         
-        String createdUri = StringAppender.mergeToStr("http://openapi.naver.com/search?key=", this.apiKey.getKey(), "&target=", this.getTargetString(), "&query=", URLEncoder.encode(keyword, "UTF-8"), subUri);
-        
-        //String createdUri = "http://openapi.naver.com/search?key=" + this.apiKey.getKey() + "&target=" + this.getTargetString() + "&query=" + URLEncoder.encode(keyword, "UTF-8") + getSubURI();
+        String createdUri = StringAppender.mergeToStr("http://openapi.naver.com/search?key=", this.apiKey.getKey(), "&target=", this.getTargetString(), "&query=", URLEncoder.encode(keyword, "UTF-8"),
+                                                      subUri);
         
         return createdUri;
     }
@@ -225,8 +200,6 @@ public class NaverApi implements SearchApi
         
         if (getTarget() == NaverApiTarget.BLOG)
         {
-            // subURI = "&display=" + String.valueOf(this.outputCount) +
-            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
             subUriSb.append("&sort=");
             subUriSb.append(this.sort);
             
@@ -234,163 +207,17 @@ public class NaverApi implements SearchApi
         
         else if (getTarget() == NaverApiTarget.CAFEARTICLE)
         {
-            // subURI = "&display=" + String.valueOf(this.outputCount) +
-            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
             subUriSb.append("&sort=");
             subUriSb.append(this.sort);
             
         }
         else if (getTarget() == NaverApiTarget.NEWS)
         {
-            // subURI = "&display=" + String.valueOf(this.outputCount) +
-            // "&start=" + String.valueOf(this.pageNo) + "&sort=" + this.sort;
             subUriSb.append("&sort=");
             subUriSb.append(this.sort);
         }
-        
-        // else if (getTarget() == NaverApiTarget.WEBKR)
-        // {
-        // subURI = "&display=" + String.valueOf(this.outputCount) + "&start=" +
-        // String.valueOf(this.pageNo);
-        //
-        // }
-        
         return subUriSb.toString();
         
-    }
-    
-    private List<SearchResult> parseDOM(Document doc)
-    {
-        
-        List<SearchResult> searchResultList = Collections.emptyList();
-        
-        if (getTarget() == NaverApiTarget.BLOG)
-        {
-            searchResultList = parseBlogDom(doc);
-        }
-        else if (getTarget() == NaverApiTarget.CAFEARTICLE)
-        {
-            searchResultList = parseCafeArticleDom(doc);
-        }
-        else if (getTarget() == NaverApiTarget.NEWS)
-        {
-            searchResultList = parseNewsDom(doc);
-        }
-        else if (getTarget() == NaverApiTarget.WEBKR)
-        {
-            searchResultList = parseWebKrDom(doc);
-        }
-        
-        return searchResultList;
-    }
-    
-    private List<SearchResult> parseBlogDom(Document doc)
-    {
-        List<SearchResult> searchResultList = new ArrayList<SearchResult>();
-        
-        Element root = doc.getDocumentElement();
-        NodeList list = root.getElementsByTagName("item");
-        
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Element element = (Element) list.item(i);
-            
-            TextSearchResult searchResult = new TextSearchResult();
-            
-            searchResult.setTitle(getContent(element, "title"));
-            searchResult.setLink(getContent(element, "link"));
-            searchResult.setSnippet(getContent(element, "description"));
-            
-            searchResultList.add(searchResult);
-            
-        }
-        
-        return searchResultList;
-    }
-    
-    private List<SearchResult> parseCafeArticleDom(Document doc)
-    {
-        List<SearchResult> searchResultList = new ArrayList<SearchResult>();
-        
-        Element root = doc.getDocumentElement();
-        NodeList list = root.getElementsByTagName("item");
-        
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Element element = (Element) list.item(i);
-            
-            TextSearchResult searchResult = new TextSearchResult();
-            
-            searchResult.setTitle(getContent(element, "title"));
-            searchResult.setLink(getContent(element, "link"));
-            searchResult.setSnippet(getContent(element, "description"));
-            
-            searchResultList.add(searchResult);
-        }
-        
-        return searchResultList;
-        
-    }
-    
-    private List<SearchResult> parseWebKrDom(Document doc)
-    {
-        List<SearchResult> searchResultList = new ArrayList<SearchResult>();
-        
-        Element root = doc.getDocumentElement();
-        NodeList list = root.getElementsByTagName("item");
-        
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Element element = (Element) list.item(i);
-            
-            TextSearchResult searchResult = new TextSearchResult();
-            
-            searchResult.setTitle(getContent(element, "title"));
-            searchResult.setLink(getContent(element, "link"));
-            searchResult.setSnippet(getContent(element, "description"));
-            
-            searchResultList.add(searchResult);
-        }
-        
-        return searchResultList;
-    }
-    
-    private List<SearchResult> parseNewsDom(Document doc)
-    {
-        List<SearchResult> searchResultList = new ArrayList<SearchResult>();
-        
-        Element root = doc.getDocumentElement();
-        NodeList list = root.getElementsByTagName("item");
-        
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Element element = (Element) list.item(i);
-            TextSearchResult searchResult = new TextSearchResult();
-            
-            searchResult.setTitle(getContent(element, "title"));
-            searchResult.setLink(getContent(element, "originallink"));
-            searchResult.setSnippet(getContent(element, "description"));
-            
-            searchResultList.add(searchResult);
-        }
-        
-        return searchResultList;
-    }
-    
-    private String getContent(Element element, String tagName)
-    {
-        
-        NodeList list = element.getElementsByTagName(tagName);
-        Element cElement = (Element) list.item(0);
-        
-        if (cElement.getFirstChild() != null)
-        {
-            return cElement.getFirstChild().getNodeValue();
-        }
-        else
-        {
-            return "";
-        }
     }
     
     public List<SearchResult> response()

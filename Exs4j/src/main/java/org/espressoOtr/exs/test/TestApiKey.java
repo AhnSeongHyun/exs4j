@@ -10,7 +10,7 @@ import org.espressoOtr.exs.api.naver.NaverApiTarget;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UT_ApiKey
+public class TestApiKey
 {
     
     @Before

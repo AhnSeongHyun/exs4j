@@ -2,15 +2,13 @@ package org.espressoOtr.exs.test;
 
 import static org.junit.Assert.*;
 
-
 import org.espressoOtr.exs.api.ApiManager;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UT_ApiManager
+public class TestNaverApi
 {
-    
-    ApiManager apiManager = null; 
+  ApiManager apiManager = null; 
     
     @Before
     public void setUp() throws Exception
@@ -54,17 +52,4 @@ public class UT_ApiManager
         apiManager.request("NAVER.NEWS", "twitter log", 3, 1);
         assertEquals(3, apiManager.response().size()); 
     }
-     
-    @Test
-    public void test_daum_cafe() throws Exception
-    { 
-        apiManager.request("DAUM.CAFE", "twitter log", 3, 1);
-        assertEquals(3, apiManager.response().size()); 
-     
-    }
-    
-    
- 
-    
-    
 }

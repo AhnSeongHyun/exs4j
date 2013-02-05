@@ -2,25 +2,32 @@ package org.espressoOtr.exs.api.daum;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.espressoOtr.exs.api.ApiKey;
 import org.espressoOtr.exs.api.SearchApi;
+import org.espressoOtr.exs.api.daum.data.DaumBlogData;
+import org.espressoOtr.exs.api.daum.data.DaumCafeData;
+import org.espressoOtr.exs.api.daum.data.DaumData;
+import org.espressoOtr.exs.api.daum.data.DaumWebData;
 import org.espressoOtr.exs.api.result.SearchResult;
-import org.espressoOtr.exs.api.result.TextSearchResult;
 import org.espressootr.lib.string.StringAppender;
 import org.espressootr.lib.utils.InitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class DaumApi implements SearchApi
@@ -114,13 +121,57 @@ public class DaumApi implements SearchApi
     {
         uri = getURI(keyword);
         
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = null;
         
-        DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document doc = builder.parse(uri);
-        this.searchResultList = parseDOM(doc);
+        DaumData obj = null;
         
-        logger.info("daum result count : " + this.searchResultList.size());
+        try
+        {
+            System.out.println(uri);
+            httpGet = new HttpGet(uri);
+            HttpResponse response = httpClient.execute(httpGet);
+            StatusLine status = response.getStatusLine();
+            
+            System.out.println(status);
+            
+            if (status.getStatusCode() == HttpStatus.SC_OK)
+            {
+                HttpEntity entity1 = response.getEntity();
+                
+                Source source = new StreamSource(entity1.getContent());
+                System.out.println(source.toString());
+                
+                JAXBContext jc = null;
+                
+                if (this.getTarget() == DaumApiTarget.BLOG)
+                    jc = JAXBContext.newInstance(DaumBlogData.class);
+                else if (this.getTarget() == DaumApiTarget.CAFE)
+                    jc = JAXBContext.newInstance(DaumCafeData.class);
+                
+                else if (this.getTarget() == DaumApiTarget.WEB) jc = JAXBContext.newInstance(DaumWebData.class);
+                
+                Unmarshaller unmarshaller = jc.createUnmarshaller();
+                
+                obj = (DaumData) unmarshaller.unmarshal(source);
+            }
+            else
+            {
+                throw new Exception("HTTP Response Status Code : " + status.getStatusCode());
+            }
+            
+        }
+        catch (Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+        finally
+        {
+            httpGet.releaseConnection();
+        }
+        
+        this.searchResultList = obj.toSearchResult();
         
     }
     
@@ -130,13 +181,7 @@ public class DaumApi implements SearchApi
         String subUri = getSubURI();
         
         String createdUri = StringAppender.mergeToStr("http://apis.daum.net/search/", getTargetString(), "?q=", URLEncoder.encode(keyword, "UTF-8"), subUri, "&apikey=", this.apiKey.getKey()
-        
-        );
-        
-        // String createdUri = "http://apis.daum.net/search/" +
-        // getTargetString() + "?q=" + URLEncoder.encode(keyword, "UTF-8") +
-        // this.getSubURI()
-        // + "&apikey=" + this.apiKey.getKey();
+         );
         
         return createdUri;
     }
@@ -145,7 +190,6 @@ public class DaumApi implements SearchApi
     {
         
         StringBuilder subUriSb = new StringBuilder();
-         
         
         subUriSb.append("&reuslt");
         subUriSb.append(String.valueOf(this.outputCount));
@@ -153,19 +197,13 @@ public class DaumApi implements SearchApi
         subUriSb.append(String.valueOf(this.pageNo));
         
         if (getTarget() == DaumApiTarget.BLOG)
-        {
-            // subURI = "&result=" + String.valueOf(this.outputCount) +
-            // "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort +
-            // "&output=" + output;
+        { 
             subUriSb.append("&sort=");
             subUriSb.append(sort);
             
         }
         else if (getTarget() == DaumApiTarget.CAFE)
-        {
-            // subURI = "&result=" + String.valueOf(this.outputCount) +
-            // "&pageno=" + String.valueOf(this.pageNo) + "&sort=" + sort +
-            // "&output=" + output;
+        { 
             subUriSb.append("&sort=");
             subUriSb.append(sort);
             
@@ -174,46 +212,6 @@ public class DaumApi implements SearchApi
         subUriSb.append("&output=xml");
         
         return subUriSb.toString();
-    }
-    
-    private List<SearchResult> parseDOM(Document doc)
-    {
-        List<SearchResult> searchResultList = new ArrayList<SearchResult>();
-        
-        Element root = doc.getDocumentElement();
-        NodeList list = root.getElementsByTagName("item");
-        
-        for (int i = 0; i < list.getLength(); i++)
-        {
-            Element element = (Element) list.item(i);
-            
-            TextSearchResult searchResult = new TextSearchResult();
-            
-            searchResult.setTitle(getContent(element, "title"));
-            searchResult.setLink(getContent(element, "link"));
-            searchResult.setSnippet(getContent(element, "description"));
-            
-            searchResultList.add(searchResult);
-            
-        }
-        
-        return searchResultList;
-    }
-    
-    private String getContent(Element element, String tagName)
-    {
-        
-        NodeList list = element.getElementsByTagName(tagName);
-        Element cElement = (Element) list.item(0);
-        
-        if (cElement.getFirstChild() != null)
-        {
-            return cElement.getFirstChild().getNodeValue();
-        }
-        else
-        {
-            return "";
-        }
     }
     
     public List<SearchResult> response()

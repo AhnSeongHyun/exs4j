@@ -50,6 +50,7 @@ public class ApiManager
         
         logger.info("service :{} ", service);
         logger.info("target : {}", target);
+         
         
         switchSearchAPI(service, target);
         currentOutputCount = outputCount;
@@ -137,6 +138,7 @@ public class ApiManager
     
     private SearchApi setBingSearchEngine(String target)
     {
+        System.out.println("bing");
         BingApi bingApi = (BingApi) this.apiMap.get("BING");
         return bingApi;
     }
