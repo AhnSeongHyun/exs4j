@@ -196,18 +196,20 @@ public class NaverCafeArticleData implements NaverData
     @Override
     public List<SearchResult> toSearchResult()
     {
-        int itemSize = this.getChannel().getItemList().size();
-        
         List<SearchResult> resultList = new ArrayList<SearchResult>();
-        
-        for (int i = 0; i < itemSize; i++)
+        if (Integer.parseInt(this.getChannel().total) != 0)
         {
-            TextSearchResult tsr = new TextSearchResult();
-            tsr.setTitle(this.getChannel().getItemList().get(i).getTitle());
-            tsr.setLink(this.getChannel().getItemList().get(i).getLink());
-            tsr.setSnippet(this.getChannel().getItemList().get(i).getDescription());
+            int itemSize = this.getChannel().getItemList().size();
             
-            resultList.add(tsr);
+            for (int i = 0; i < itemSize; i++)
+            {
+                TextSearchResult tsr = new TextSearchResult();
+                tsr.setTitle(this.getChannel().getItemList().get(i).getTitle());
+                tsr.setLink(this.getChannel().getItemList().get(i).getLink());
+                tsr.setSnippet(this.getChannel().getItemList().get(i).getDescription());
+                
+                resultList.add(tsr);
+            }
         }
         
         return resultList;

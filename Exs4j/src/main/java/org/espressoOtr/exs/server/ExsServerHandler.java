@@ -124,11 +124,6 @@ public class ExsServerHandler extends SimpleChannelHandler
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
     {
         e.getCause().printStackTrace();
-        
-        Channel ch = e.getChannel();
-        ch.close();
-        
-        msg = "ExsServer End..";
         logger.info(msg);
     }
     

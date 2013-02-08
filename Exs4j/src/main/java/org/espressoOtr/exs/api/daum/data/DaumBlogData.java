@@ -203,18 +203,21 @@ public class DaumBlogData implements DaumData
     @Override
     public List<SearchResult> toSearchResult()
     {
-        int itemSize = this.getItemList().size();
-        
         List<SearchResult> resultList = new ArrayList<SearchResult>();
         
-        for (int i = 0; i < itemSize; i++)
+        if (Integer.parseInt(this.totalCount) != 0)
         {
-            TextSearchResult tsr = new TextSearchResult();
-            tsr.setTitle(this.getItemList().get(i).getTitle());
-            tsr.setLink(this.getItemList().get(i).getLink());
-            tsr.setSnippet(this.getItemList().get(i).getDescription());
+            int itemSize = this.getItemList().size();
             
-            resultList.add(tsr);
+            for (int i = 0; i < itemSize; i++)
+            {
+                TextSearchResult tsr = new TextSearchResult();
+                tsr.setTitle(this.getItemList().get(i).getTitle());
+                tsr.setLink(this.getItemList().get(i).getLink());
+                tsr.setSnippet(this.getItemList().get(i).getDescription());
+                
+                resultList.add(tsr);
+            }
         }
         return resultList;
     }

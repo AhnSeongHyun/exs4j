@@ -192,9 +192,13 @@ public class DaumWebData implements DaumData
     @Override
     public List<SearchResult> toSearchResult()
     {
-        int itemSize = this.getItemList().size();
-        
         List<SearchResult> resultList = new ArrayList<SearchResult>();
+        
+        
+        
+        if (Integer.parseInt(this.totalCount) != 0)
+        {
+            int itemSize = this.getItemList().size();
         
         for (int i = 0; i < itemSize; i++)
         {
@@ -204,6 +208,7 @@ public class DaumWebData implements DaumData
             tsr.setSnippet(this.getItemList().get(i).getDescription());
             
             resultList.add(tsr);
+        }
         }
         return resultList;
     }

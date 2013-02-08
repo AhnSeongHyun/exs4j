@@ -5,11 +5,12 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement; 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.espressoOtr.exs.api.result.SearchResult;
 import org.espressoOtr.exs.api.result.TextSearchResult;
+
 @XmlRootElement(name = "channel")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DaumCafeData implements DaumData
@@ -227,18 +228,21 @@ public class DaumCafeData implements DaumData
     @Override
     public List<SearchResult> toSearchResult()
     {
-        int itemSize = this.getItemList().size();
-        
         List<SearchResult> resultList = new ArrayList<SearchResult>();
         
-        for (int i = 0; i < itemSize; i++)
+        if (Integer.parseInt(this.totalCount) != 0)
         {
-            TextSearchResult tsr = new TextSearchResult();
-            tsr.setTitle(this.getItemList().get(i).getTitle());
-            tsr.setLink(this.getItemList().get(i).getLink());
-            tsr.setSnippet(this.getItemList().get(i).getDescription());
+            int itemSize = this.getItemList().size();
             
-            resultList.add(tsr);
+            for (int i = 0; i < itemSize; i++)
+            {
+                TextSearchResult tsr = new TextSearchResult();
+                tsr.setTitle(this.getItemList().get(i).getTitle());
+                tsr.setLink(this.getItemList().get(i).getLink());
+                tsr.setSnippet(this.getItemList().get(i).getDescription());
+                
+                resultList.add(tsr);
+            }
         }
         return resultList;
     }
