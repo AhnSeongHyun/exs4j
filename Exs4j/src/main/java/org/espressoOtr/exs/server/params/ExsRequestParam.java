@@ -1,17 +1,19 @@
 package org.espressoOtr.exs.server.params;
 
+ 
 import org.espressootr.lib.utils.InitUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * @author hnSeongHyun(sh84.ahn@gmail.com) EXS Server Request Parameter Use
- *         ExsReuqestParam to JSon String.
- */
+ 
 public class ExsRequestParam
 {
     private String keyword = InitUtil.EMPTY_STRING;
     private String domain = InitUtil.EMPTY_STRING;
     private int outputCount = 0;
     private int pageNo = 0;
+    
+    Logger logger = LoggerFactory.getLogger(ExsRequestParam.class);
     
     public String getKeyword()
     {
@@ -53,4 +55,5 @@ public class ExsRequestParam
         this.pageNo = pageNo;
     }
     
+  
 }
