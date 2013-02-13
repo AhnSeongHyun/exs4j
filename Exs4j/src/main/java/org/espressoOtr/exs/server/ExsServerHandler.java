@@ -6,7 +6,6 @@ import org.espressoOtr.exs.server.params.ExsResponseParam;
 
 import org.espressootr.lib.string.StringAppender;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
