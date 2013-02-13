@@ -8,6 +8,8 @@ Exs4j is a searched contents server based on Open API of portal/search web servi
 
 - Blog : http://ash84.tistory.com/category/OpenSource/Exs4J 
 
+- Twitter : @exs4j_project 
+
 ###Getting Exs4j
 
 - Clone to the your computer using github
