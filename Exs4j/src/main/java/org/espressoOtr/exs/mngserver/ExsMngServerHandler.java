@@ -1,12 +1,15 @@
-package org.espressoOtr.exs.server;
+package org.espressoOtr.exs.mngserver;
 
 import org.espressoOtr.exs.api.ApiManager;
+import org.espressoOtr.exs.mngserver.params.ExsMngRequestParam;
+import org.espressoOtr.exs.mngserver.params.ExsMngResponseParam;
+import org.espressoOtr.exs.server.ExsServerHandler;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
-
 import org.espressootr.lib.string.StringAppender;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -17,8 +20,9 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExsServerHandler extends SimpleChannelHandler
+public class ExsMngServerHandler extends SimpleChannelHandler
 {
+
     
     static final ChannelGroup allChannels = new DefaultChannelGroup("time-server");
     
@@ -35,7 +39,7 @@ public class ExsServerHandler extends SimpleChannelHandler
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
   
-    public ExsServerHandler()
+    public ExsMngServerHandler()
     {
         apiManager = new ApiManager();
     }
@@ -45,31 +49,30 @@ public class ExsServerHandler extends SimpleChannelHandler
     {
         logger.info("e.getMeessage():{}", e.getMessage().toString());
         
-        ExsRequestParam recvExsData = (ExsRequestParam) e.getMessage();
-        apiManager.request(recvExsData.getDomain(), recvExsData.getKeyword(), recvExsData.getOutputCount(), recvExsData.getPageNo());
+        ExsMngRequestParam recvExsMngData = (ExsMngRequestParam) e.getMessage();
         
         // response
         ExsResponseParam exsResponseParam = new ExsResponseParam();
         exsResponseParam.setResultList(apiManager.response());
         exsResponseParam.setOutputCount(exsResponseParam.getResultList().size());
         
-        ChannelFuture result = sendCrxResponseParam(e.getChannel(), exsResponseParam);
-        
-        if (result.isSuccess() == true)
-            msg = "SEND SUCCESS.";
-        else
-            msg = "SEND FAIL.";
-        
-        logger.info(msg);
+        //ChannelFuture result = sendResponseParam(e.getChannel(), exsMngResponseParam);
+//        
+//        if (result.isSuccess() == true)
+//            msg = "SEND SUCCESS.";
+//        else
+//            msg = "SEND FAIL.";
+//        
+//        logger.info(msg);
         
     }
     
-    public ChannelFuture sendCrxResponseParam(Channel responseChannel, ExsResponseParam exsResponseParam)
+    public ChannelFuture sendResponseParam(Channel responseChannel, ExsMngResponseParam exsMngResponseParam)
     {
         
         logger.info("sendCrxResponseParam start");
         
-        return responseChannel.write(exsResponseParam);
+        return responseChannel.write(exsMngResponseParam);
         
     }
     

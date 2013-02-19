@@ -3,5 +3,6 @@ package org.espressoOtr.exs;
 public enum ExsMode
 {
     NONE, 
-    SERVER 
+    SERVER_START,
+    SERVER_STOP
 }

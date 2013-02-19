@@ -1,16 +1,17 @@
 package org.espressoOtr.exs.api;
-
+ 
 import java.util.HashMap;
 import java.util.List;
-
+ 
 import org.espressoOtr.exs.api.bing.BingApi;
 import org.espressoOtr.exs.api.daum.DaumApi;
 import org.espressoOtr.exs.api.daum.DaumApiTarget;
 import org.espressoOtr.exs.api.naver.NaverApi;
 import org.espressoOtr.exs.api.naver.NaverApiTarget;
-import org.espressoOtr.exs.api.result.SearchResult;
+import org.espressoOtr.exs.api.result.SearchResult; 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+ 
 
 public class ApiManager
 {
@@ -59,7 +60,10 @@ public class ApiManager
         api.setPageNo(pageNo);
         api.request(keyword);
         
+        
     }
+    
+     
     
     private void switchSearchAPI(String service, String target)
     {
@@ -138,7 +142,6 @@ public class ApiManager
     
     private SearchApi setBingSearchEngine(String target)
     {
-        System.out.println("bing");
         BingApi bingApi = (BingApi) this.apiMap.get("BING");
         return bingApi;
     }

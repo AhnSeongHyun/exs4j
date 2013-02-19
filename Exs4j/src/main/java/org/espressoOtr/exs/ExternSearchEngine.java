@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.espressoOtr.exs.common.Properties;
 import org.espressoOtr.exs.conf.ConfigurationReader;
+import org.espressoOtr.exs.mngserver.ExsMngServer;
 import org.espressoOtr.exs.server.ExsServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,28 +14,41 @@ import org.slf4j.LoggerFactory;
 public class ExternSearchEngine
 {
     static ExsMode exsMode = ExsMode.NONE;
+    
     static Logger logger = LoggerFactory.getLogger(ExternSearchEngine.class);
     
     public static void main(String[] args) throws Exception
-    { 
+    {
         setConfig(args);
         
         getExsMode(args);
         
         ExsServer exsServer = new ExsServer();
+        ExsMngServer exsMngServer = new ExsMngServer();
         
-        if (exsMode == ExsMode.SERVER)
-            exsServer.run();
+        if (exsMode == ExsMode.SERVER_START)
+        {
+            exsServer.start();
+        //    exsMngServer.start();
+        }
+        
+        else if (exsMode == ExsMode.SERVER_STOP)
+        {
+            
+        }
         else
+        {
             showUsage();
+        }
+        
     }
     
     private static void setConfig(String[] args)
-    { 
+    {
         String confFilePath = getConfFilePath(args);
         Map<String, String> confKv = ConfigurationReader.settingConfigurations(confFilePath);
         
-        PropertyConfigurator.configure(System.getProperty("log4j_properties"));
+        PropertyConfigurator.configure(System.getProperty(Properties.LOG4J_PROPERTIES));
         
         Set<String> confKeySet = confKv.keySet();
         
@@ -63,7 +78,10 @@ public class ExternSearchEngine
         if (args.length >= 1)
         {
             if (args[0].equals("-server"))
-                exsMode = ExsMode.SERVER;
+                exsMode = ExsMode.SERVER_START;
+            
+            else if (args[0].equals("-stop"))
+                exsMode = ExsMode.SERVER_STOP;
             
             else
                 exsMode = ExsMode.NONE;

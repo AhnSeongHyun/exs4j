@@ -1,24 +1,24 @@
-package org.espressoOtr.exs.server;
+package org.espressoOtr.exs.mngserver;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import org.espressoOtr.exs.common.Properties;
+import org.espressoOtr.exs.common.Properties; 
 import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.ChannelFactory; 
+import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-public class ExsServer
+public class ExsMngServer
 {
     private int port = 8000;
-    Logger logger = LoggerFactory.getLogger(ExsServer.class);
+    Logger logger = LoggerFactory.getLogger(ExsMngServer.class);
     
-    public ExsServer()
+    public ExsMngServer()
     {
         this.port = Integer.parseInt(System.getProperty(Properties.PORT));
+      
     }
     
     
@@ -27,7 +27,7 @@ public class ExsServer
         return port;
     }
     
- 
+  
     public void start()
     {
         
@@ -36,16 +36,16 @@ public class ExsServer
         ServerBootstrap bootstrap = new ServerBootstrap(factory);
         
          
-        bootstrap.setPipelineFactory(new JsonPipelineFactory());            
+        bootstrap.setPipelineFactory(new JsonMngPipelineFactory());            
         
         
         bootstrap.setOption("child.tcpNoDelay", true);
         bootstrap.setOption("child.keepAlive", true);
 
-  
+
         bootstrap.bind(new InetSocketAddress(this.port));
         
-        logger.info("ExsServer Started..  port:{}", this.port);
+        logger.info("ExsMngServer Started..  port:{}", this.port);
         
     }
     
@@ -55,9 +55,4 @@ public class ExsServer
         // TODO Auto-generated method stub
         
     }
-    
-  
-
-  
-    
 }
