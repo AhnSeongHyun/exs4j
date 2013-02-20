@@ -3,56 +3,70 @@ package org.espressoOtr.exs.mngserver;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import org.espressoOtr.exs.common.Properties; 
+import org.espressoOtr.exs.MessageQueue;
+import org.espressoOtr.exs.common.Properties;
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFactory;
+import org.jboss.netty.channel.group.ChannelGroup;
+import org.jboss.netty.channel.group.ChannelGroupFuture;
+import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ExsMngServer
 {
-    private int port = 8000;
+    
     Logger logger = LoggerFactory.getLogger(ExsMngServer.class);
     
-    public ExsMngServer()
+    private static final ExsMngServer sharedObject = new ExsMngServer();
+    
+    ChannelFactory factory = null;
+    
+    ServerBootstrap bootstrap = null;
+    
+    static final ChannelGroup allChannels = new DefaultChannelGroup("admin-server");
+    
+    private ExsMngServer()
     {
-        this.port = Integer.parseInt(System.getProperty(Properties.PORT));
-      
     }
     
-    
-    public int getPort()
+    public static ExsMngServer getInstance()
     {
-        return port;
+        return sharedObject;
     }
     
-  
     public void start()
     {
+        int port = Integer.parseInt(System.getProperty(Properties.PORT));
+        port++;
         
-        ChannelFactory factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
+        factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
         
-        ServerBootstrap bootstrap = new ServerBootstrap(factory);
+        bootstrap = new ServerBootstrap(factory);
         
-         
-        bootstrap.setPipelineFactory(new JsonMngPipelineFactory());            
-        
+        bootstrap.setPipelineFactory(new JsonMngPipelineFactory());
         
         bootstrap.setOption("child.tcpNoDelay", true);
         bootstrap.setOption("child.keepAlive", true);
-
-
-        bootstrap.bind(new InetSocketAddress(this.port));
         
-        logger.info("ExsMngServer Started..  port:{}", this.port);
+        Channel channel = bootstrap.bind(new InetSocketAddress(port));
+        allChannels.add(channel);
+        
+        logger.info("ExsMngServer Started..  port:{}", port);
         
     }
     
-    
     public void stop()
     {
-        // TODO Auto-generated method stub
+        ChannelGroupFuture futures = allChannels.close();
+        
+        futures.awaitUninterruptibly();
+        
+        factory.releaseExternalResources();
+        
+        logger.info("ExsMngServer Stop..");
         
     }
 }

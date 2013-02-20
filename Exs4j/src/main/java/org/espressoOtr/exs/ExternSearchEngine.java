@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.espressoOtr.exs.cmd.Command;
+import org.espressoOtr.exs.cmd.CommandProcGroup;
+import org.espressoOtr.exs.cmd.CommandProcessor;
 import org.espressoOtr.exs.common.Properties;
 import org.espressoOtr.exs.conf.ConfigurationReader;
 import org.espressoOtr.exs.mngserver.ExsMngServer;
@@ -20,27 +23,50 @@ public class ExternSearchEngine
     public static void main(String[] args) throws Exception
     {
         setConfig(args);
-        
         getExsMode(args);
         
-        ExsServer exsServer = new ExsServer();
-        ExsMngServer exsMngServer = new ExsMngServer();
+        MessageQueue msgQ = MessageQueue.getInstance();
+        CommandProcGroup cmdProcGroup = CommandProcGroup.getInstance();
+        
+        ExsServer exsServer = ExsServer.getInstance();
+        ExsMngServer exsMngServer = ExsMngServer.getInstance();
+        
         
         if (exsMode == ExsMode.SERVER_START)
         {
             exsServer.start();
-        //    exsMngServer.start();
-        }
-        
-        else if (exsMode == ExsMode.SERVER_STOP)
-        {
+            exsMngServer.start();
             
+            CommandProcessor cmdProc = null;
+            
+            for (;;)
+            {
+                if (msgQ.size() > 0)
+                {
+                    Command cmd = msgQ.get();
+                    logger.info("process cmd :{}", cmd);
+                    
+                    if (cmd != Command.NONE)
+                    {                        
+                        cmdProc = cmdProcGroup.getProc(cmd);
+                        cmdProc.process();
+                    }
+                    
+                    if(cmd == Command.STOP)
+                    {
+                        break;
+                    }
+                }
+                
+                Thread.sleep(100);
+            }
         }
         else
         {
             showUsage();
         }
         
+        logger.info("Exs4j Shutdown..");
     }
     
     private static void setConfig(String[] args)
@@ -79,9 +105,6 @@ public class ExternSearchEngine
         {
             if (args[0].equals("-server"))
                 exsMode = ExsMode.SERVER_START;
-            
-            else if (args[0].equals("-stop"))
-                exsMode = ExsMode.SERVER_STOP;
             
             else
                 exsMode = ExsMode.NONE;

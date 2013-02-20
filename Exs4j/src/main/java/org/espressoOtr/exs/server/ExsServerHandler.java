@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class ExsServerHandler extends SimpleChannelHandler
 {
     
-    static final ChannelGroup allChannels = new DefaultChannelGroup("time-server");
+    static final ChannelGroup allChannels = new DefaultChannelGroup("exs-server");
     
     final String connectedMsg = "[connected] ";
     
@@ -34,7 +34,6 @@ public class ExsServerHandler extends SimpleChannelHandler
     
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
-  
     public ExsServerHandler()
     {
         apiManager = new ApiManager();
@@ -82,8 +81,6 @@ public class ExsServerHandler extends SimpleChannelHandler
         
         msg = StringAppender.mergeToStr(connectedMsg, e.getChannel().getLocalAddress().toString(), " , Connections:", String.valueOf(allChannels.size()));
         logger.info(msg);
-         
-
         
     }
     

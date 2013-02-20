@@ -1,5 +1,6 @@
 package org.espressoOtr.exs.mngserver;
 
+import org.espressoOtr.exs.MessageQueue;
 import org.espressoOtr.exs.api.ApiManager;
 import org.espressoOtr.exs.mngserver.params.ExsMngRequestParam;
 import org.espressoOtr.exs.mngserver.params.ExsMngResponseParam;
@@ -7,6 +8,7 @@ import org.espressoOtr.exs.server.ExsServerHandler;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
 import org.espressootr.lib.string.StringAppender;
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandler;
@@ -22,9 +24,8 @@ import org.slf4j.LoggerFactory;
 
 public class ExsMngServerHandler extends SimpleChannelHandler
 {
-
     
-    static final ChannelGroup allChannels = new DefaultChannelGroup("time-server");
+    static final ChannelGroup allChannels = new DefaultChannelGroup("admin-server");
     
     final String connectedMsg = "[connected] ";
     
@@ -34,46 +35,27 @@ public class ExsMngServerHandler extends SimpleChannelHandler
     
     String msg = "";
     
-    ApiManager apiManager = null;
+    MessageQueue msgQ = MessageQueue.getInstance();
     
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
-  
     public ExsMngServerHandler()
     {
-        apiManager = new ApiManager();
     }
     
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception
     {
-        logger.info("e.getMeessage():{}", e.getMessage().toString());
         
-        ExsMngRequestParam recvExsMngData = (ExsMngRequestParam) e.getMessage();
-        
-        // response
-        ExsResponseParam exsResponseParam = new ExsResponseParam();
-        exsResponseParam.setResultList(apiManager.response());
-        exsResponseParam.setOutputCount(exsResponseParam.getResultList().size());
-        
-        //ChannelFuture result = sendResponseParam(e.getChannel(), exsMngResponseParam);
-//        
-//        if (result.isSuccess() == true)
-//            msg = "SEND SUCCESS.";
-//        else
-//            msg = "SEND FAIL.";
-//        
-//        logger.info(msg);
+        String msgStr = new String(((ChannelBuffer) e.getMessage()).array());
+        logger.info("e.getMeessage():{}", msgStr);
+        msgQ.add(msgStr);
         
     }
     
     public ChannelFuture sendResponseParam(Channel responseChannel, ExsMngResponseParam exsMngResponseParam)
-    {
-        
-        logger.info("sendCrxResponseParam start");
-        
-        return responseChannel.write(exsMngResponseParam);
-        
+    { 
+        return responseChannel.write(exsMngResponseParam); 
     }
     
     @Override
@@ -85,8 +67,6 @@ public class ExsMngServerHandler extends SimpleChannelHandler
         
         msg = StringAppender.mergeToStr(connectedMsg, e.getChannel().getLocalAddress().toString(), " , Connections:", String.valueOf(allChannels.size()));
         logger.info(msg);
-         
-
         
     }
     

@@ -30,6 +30,9 @@ public class ExsClientEx
     public static void main(String[] args) throws IOException, InterruptedException
     {
         PropertyConfigurator.configure("./lib/log4j.propertise");
+        
+        int port = Integer.parseInt(args[0]);
+        
  
         ChannelFactory factory = new NioClientSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
         
@@ -40,9 +43,9 @@ public class ExsClientEx
         bootstrap.setOption("tcpNoDelay", true);
         bootstrap.setOption("keepAlive", true);
         
-        ChannelFuture future = bootstrap.connect(new InetSocketAddress("localhost", 9711));
+        ChannelFuture future = bootstrap.connect(new InetSocketAddress("localhost", port));
         
-        /*
+         
         // 아래 부터는 connection 끊어 졌을 때를 위한 처리
         Channel channel = future.awaitUninterruptibly().getChannel();
         
@@ -80,7 +83,7 @@ public class ExsClientEx
         // connection close.
         future.getChannel().getCloseFuture().awaitUninterruptibly();
         bootstrap.releaseExternalResources();
-        */
+       
         return;
         
     }
