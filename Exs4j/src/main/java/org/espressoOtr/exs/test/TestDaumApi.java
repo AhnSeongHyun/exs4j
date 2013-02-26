@@ -2,9 +2,9 @@ package org.espressoOtr.exs.test;
 
 import static org.junit.Assert.*;
 
-import org.espressoOtr.exs.api.ApiManager;
 import org.espressoOtr.exs.api.daum.DaumApi;
 import org.espressoOtr.exs.api.daum.DaumApiTarget; 
+import org.espressoOtr.exs.api.manager.ApiManager;
 import org.junit.Before;
 import org.junit.Test;
 

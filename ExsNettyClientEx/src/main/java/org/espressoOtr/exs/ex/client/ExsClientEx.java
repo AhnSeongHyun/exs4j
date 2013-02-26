@@ -29,7 +29,7 @@ public class ExsClientEx
     
     public static void main(String[] args) throws IOException, InterruptedException
     {
-        PropertyConfigurator.configure("./lib/log4j.propertise");
+        PropertyConfigurator.configure("./log4j.properties");
         
         int port = Integer.parseInt(args[0]);
         

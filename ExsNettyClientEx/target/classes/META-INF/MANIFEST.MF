@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Built-By: AhnSeongHyun
 Build-Jdk: 1.6.0_38
+Main-Class: org.espressoOtr.exs.ex.client.ExsClientEx
 Created-By: Maven Integration for Eclipse
 

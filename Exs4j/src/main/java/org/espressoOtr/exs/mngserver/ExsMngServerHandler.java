@@ -1,17 +1,12 @@
 package org.espressoOtr.exs.mngserver;
 
-import org.espressoOtr.exs.MessageQueue;
-import org.espressoOtr.exs.api.ApiManager;
-import org.espressoOtr.exs.mngserver.params.ExsMngRequestParam;
+import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.mngserver.params.ExsMngResponseParam;
 import org.espressoOtr.exs.server.ExsServerHandler;
-import org.espressoOtr.exs.server.params.ExsRequestParam;
-import org.espressoOtr.exs.server.params.ExsResponseParam;
 import org.espressootr.lib.string.StringAppender;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelHandler;
+import org.jboss.netty.channel.ChannelFuture; 
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;

@@ -1,6 +1,6 @@
 package org.espressoOtr.exs.server;
 
-import org.espressoOtr.exs.api.ApiManager;
+import org.espressoOtr.exs.api.manager.ApiManager;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
 

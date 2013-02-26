@@ -3,7 +3,6 @@ package org.espressoOtr.exs.mngserver;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import org.espressoOtr.exs.MessageQueue;
 import org.espressoOtr.exs.common.Properties;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;

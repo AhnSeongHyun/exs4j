@@ -65,7 +65,7 @@ public class NaverApi implements SearchApi
     
     public NaverApi()
     {
-        this.apiKey = new ApiKey(this);
+        this.apiKey = new ApiKey(NaverApi.class.getSimpleName());
     }
     
     public void setTarget(NaverApiTarget target)

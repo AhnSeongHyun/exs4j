@@ -1,4 +1,4 @@
-package org.espressoOtr.exs;
+package org.espressoOtr.exs.messageq;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

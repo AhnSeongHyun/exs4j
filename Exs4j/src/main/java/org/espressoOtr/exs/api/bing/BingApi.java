@@ -40,7 +40,7 @@ public class BingApi implements SearchApi
     
     public BingApi()
     {
-        this.apiKey = new ApiKey(this); 
+        this.apiKey = new ApiKey(BingApi.class.getSimpleName()); 
     }
     
     public void request(String keyword)

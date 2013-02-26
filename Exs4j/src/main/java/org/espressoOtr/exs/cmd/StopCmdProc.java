@@ -11,11 +11,9 @@ public class StopCmdProc implements CommandProcessor
     
     @Override
     public void process()
-    {
-        
+    { 
         ExsServer.getInstance().stop();
-        ExsMngServer.getInstance().stop();
-        
+        ExsMngServer.getInstance().stop(); 
     }
     
 }

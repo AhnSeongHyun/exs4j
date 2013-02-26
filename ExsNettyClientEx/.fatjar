@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Feb 26 14:56:06 KST 2013
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=ExsNettyClientEx_fat.jar
+manifest.mergeall=true
+manifest.mainclass=org.espressoOtr.exs.ex.client.ExsClientEx
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

@@ -1,8 +1,10 @@
-package org.espressoOtr.exs.api;
+package org.espressoOtr.exs.api.manager;
  
 import java.util.HashMap;
 import java.util.List;
  
+import org.espressoOtr.exs.api.SearchApi;
+import org.espressoOtr.exs.api.SearchEngines;
 import org.espressoOtr.exs.api.bing.BingApi;
 import org.espressoOtr.exs.api.daum.DaumApi;
 import org.espressoOtr.exs.api.daum.DaumApiTarget;

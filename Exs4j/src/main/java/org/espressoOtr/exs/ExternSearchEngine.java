@@ -9,6 +9,7 @@ import org.espressoOtr.exs.cmd.CommandProcGroup;
 import org.espressoOtr.exs.cmd.CommandProcessor;
 import org.espressoOtr.exs.common.Properties;
 import org.espressoOtr.exs.conf.ConfigurationReader;
+import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.mngserver.ExsMngServer;
 import org.espressoOtr.exs.server.ExsServer;
 import org.slf4j.Logger;

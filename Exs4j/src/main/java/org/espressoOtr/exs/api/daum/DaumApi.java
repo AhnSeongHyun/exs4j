@@ -64,7 +64,7 @@ public class DaumApi implements SearchApi
     
     public DaumApi()
     {
-        this.apiKey = new ApiKey(this);
+        this.apiKey = new ApiKey(DaumApi.class.getSimpleName());
     }
     
     public void setTarget(DaumApiTarget target)

@@ -2,39 +2,43 @@ package org.espressoOtr.exs.api;
 
 import java.util.Random;
 
-import org.espressoOtr.exs.api.bing.BingApi;
-import org.espressoOtr.exs.api.daum.DaumApi;
-import org.espressoOtr.exs.api.naver.NaverApi;
+ 
 import org.espressoOtr.exs.common.Properties;
 import org.espressootr.lib.utils.InitUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApiKey
 {
     
     private String APIKEY = null; 
+
+    Logger logger = LoggerFactory.getLogger(ApiKey.class);
     
-    
-    public ApiKey(Object classType)
+    public ApiKey(String className)
     {
-        APIKEY = getKeyString(classType);
+        APIKEY = getKeyString(className);
     }
     
-    private String getKeyString(Object classType)
+    private String getKeyString(String className)
     { 
+        
+        logger.info("{}", className);
+        
         String apiKey = InitUtil.EMPTY_STRING;
         String propertyKey = InitUtil.EMPTY_STRING;
         
         
-        if (classType.getClass() == NaverApi.class)
+        if (className.equals("NaverApi"))
         {
             propertyKey = Properties.NAVER_KEY;
         }
-        else if (classType.getClass() == DaumApi.class)
+        else if (className.equals("DaumApi"))
         {
             propertyKey = Properties.DAUM_KEY;
                    
         }
-        else if (classType.getClass() == BingApi.class)
+        else if (className.equals("BingApi"))
         {
             propertyKey = Properties.BING_KEY;
         }
