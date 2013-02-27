@@ -6,9 +6,21 @@ import org.espressootr.lib.utils.InitUtil;
 
 public class RequestRecord
 {
+    private String requestCode = InitUtil.EMPTY_STRING;
     private String masterKeyword = InitUtil.EMPTY_STRING;
     private String origin  = InitUtil.EMPTY_STRING;
     private Date  reqDate;
+    
+ 
+    public String getRequestCode()
+    {
+        return requestCode;
+    }
+    public void setRequestCode(String requestCode)
+    {
+        this.requestCode = requestCode;
+    }
+
     
     public String getMasterKeyword()
     {

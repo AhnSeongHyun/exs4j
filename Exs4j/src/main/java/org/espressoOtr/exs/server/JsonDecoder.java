@@ -20,9 +20,6 @@ public class JsonDecoder extends OneToOneDecoder
         {
 
             String msgStr = new String(((ChannelBuffer) msg).array());
-            
-         
-            
             ExsRequestParam exsReqParam = JsonBodum.fromJson(msgStr, ExsRequestParam.class);
             
             return exsReqParam;

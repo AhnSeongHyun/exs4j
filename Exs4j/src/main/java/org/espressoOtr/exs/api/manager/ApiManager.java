@@ -60,11 +60,9 @@ public class ApiManager
         
         api.setOutputCount(outputCount);
         api.setPageNo(pageNo);
-        api.request(keyword);
-        
+        api.request(keyword); 
         
     }
-    
      
     
     private void switchSearchAPI(String service, String target)

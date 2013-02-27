@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.espressoOtr.exs.cmd.Command;
+import org.espressoOtr.exs.cmd.CommandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,27 +25,43 @@ public class MessageQueue
         return sharedObject;
     }
     
-    public void add(String msg)
-    {
-        
-        this.msgQ.add(stringToCommand(msg));
+    public void add(Command msg)
+    { 
+        this.msgQ.add(msg);
         logger.info("msgQ size : {}", msgQ.size());
         
     }
     
-    private Command stringToCommand(String msg)
+    public void add(CommandType cmdType, Object value)
+    { 
+        this.msgQ.add(new Command(cmdType, value));
+     
+        
+    }
+    
+    public void add(String msg)
     {
-        Command cmd = Command.NONE;
-        if (msg.equalsIgnoreCase(Command.STOP.name()))
+        
+        this.msgQ.add(new Command(stringToCommand(msg), null));
+     
+        
+    }
+    
+ 
+    
+    private CommandType stringToCommand(String msg)
+    {
+        CommandType cmdType = CommandType.NONE;
+        if (msg.equalsIgnoreCase(CommandType.STOP.name()))
         {
-            cmd = Command.STOP;
+            cmdType = CommandType.STOP;
         }
         else
         {
-            cmd = Command.NONE;
+            cmdType = CommandType.NONE;
         }
         
-        return cmd;
+        return cmdType;
         
     }
     

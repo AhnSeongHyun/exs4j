@@ -4,7 +4,7 @@
 <mapper namespace="tb_request_insertion">
   
   <insert id="insertRequestRecord" parameterType="org.espressoOtr.exs.sql.param.RequestRecord">
-    INSERT INTO tb_request(masterKeyword, origin, reqDate) VALUES (#{masterKeyword},#{origin},#{reqDate})
+    INSERT INTO tb_request(requestCode, masterKeyword, origin, reqDate) VALUES (#{requestCode},#{masterKeyword},#{origin},#{reqDate})
   </insert>
   
 </mapper>

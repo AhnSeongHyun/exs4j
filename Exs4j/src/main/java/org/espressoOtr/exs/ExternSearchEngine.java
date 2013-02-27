@@ -5,8 +5,9 @@ import java.util.Set;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.espressoOtr.exs.cmd.Command;
-import org.espressoOtr.exs.cmd.CommandProcGroup;
-import org.espressoOtr.exs.cmd.CommandProcessor;
+import org.espressoOtr.exs.cmd.CommandType;
+import org.espressoOtr.exs.cmd.process.CommandProcGroup;
+import org.espressoOtr.exs.cmd.process.CommandProcessor;
 import org.espressoOtr.exs.common.Properties;
 import org.espressoOtr.exs.conf.ConfigurationReader;
 import org.espressoOtr.exs.messageq.MessageQueue;
@@ -45,15 +46,15 @@ public class ExternSearchEngine
                 if (msgQ.size() > 0)
                 {
                     Command cmd = msgQ.get();
-                    logger.info("process cmd :{}", cmd);
+                    logger.info("{}", cmd.toString());
                     
-                    if (cmd != Command.NONE)
+                    if (cmd.getCmdType() != CommandType.NONE)
                     {                        
-                        cmdProc = cmdProcGroup.getProc(cmd);
-                        cmdProc.process();
+                        cmdProc = cmdProcGroup.getProc(cmd.getCmdType());
+                        cmdProc.process(cmd);
                     }
                     
-                    if(cmd == Command.STOP)
+                    if(cmd.getCmdType() == CommandType.STOP)
                     {
                         break;
                     }

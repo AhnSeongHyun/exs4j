@@ -4,18 +4,18 @@ import org.espressootr.lib.utils.InitUtil;
 
 public class SearchResultRecord
 {
-    private int requestCode = 0; 
+    private String requestCode =  InitUtil.EMPTY_STRING;
     private String docId = InitUtil.EMPTY_STRING; 
     private String title = InitUtil.EMPTY_STRING; 
     private String snippet = InitUtil.EMPTY_STRING;
     private String link = InitUtil.EMPTY_STRING;
     
    
-    public int getRequestCode()
+    public String getRequestCode()
     {
         return requestCode;
     }
-    public void setRequestCode(int requestCode)
+    public void setRequestCode(String requestCode)
     {
         this.requestCode = requestCode;
     }

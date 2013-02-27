@@ -1,9 +1,10 @@
-package org.espressoOtr.exs.cmd;
+package org.espressoOtr.exs.cmd.process;
 
  
 import java.util.HashMap;
 import java.util.Map;
-
+ 
+import org.espressoOtr.exs.cmd.CommandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,14 +12,15 @@ public class CommandProcGroup
 {
     private static final CommandProcGroup sharedObject = new CommandProcGroup();
     
-    private static Map<Command, CommandProcessor> cmdProcessors  = new HashMap<Command, CommandProcessor>();
+    private static Map<CommandType, CommandProcessor> cmdProcessors  = new HashMap<CommandType, CommandProcessor>();
     
      
     Logger logger = LoggerFactory.getLogger(CommandProcGroup.class);
     
     static
     {
-        cmdProcessors.put(Command.STOP, new StopCmdProc());
+        cmdProcessors.put(CommandType.STOP, new StopCmdProc());
+        cmdProcessors.put(CommandType.STORE, new StoreCmdProc());
         
     }
     
@@ -33,9 +35,9 @@ public class CommandProcGroup
         return sharedObject;
     }
     
-    public CommandProcessor getProc(Command cmd)
+    public CommandProcessor getProc(CommandType cmdType)
     {
-       return cmdProcessors.get(cmd);
+       return cmdProcessors.get(cmdType);
     }
      
      

@@ -1,10 +1,14 @@
 package org.espressoOtr.exs.server;
-
-import org.espressoOtr.exs.api.manager.ApiManager;
+ 
+import org.espressoOtr.exs.api.manager.ApiManager; 
+import org.espressoOtr.exs.cmd.CommandType;
+import org.espressoOtr.exs.localcache.StoringCache;
+import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
-import org.espressoOtr.exs.server.params.ExsResponseParam;
+import org.espressoOtr.exs.server.params.ExsResponseParam; 
 
 import org.espressootr.lib.string.StringAppender;
+import org.espressootr.lib.utils.InitUtil;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -34,6 +38,9 @@ public class ExsServerHandler extends SimpleChannelHandler
     
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
+
+    MessageQueue msgQ = MessageQueue.getInstance();
+    
     public ExsServerHandler()
     {
         apiManager = new ApiManager();
@@ -44,8 +51,9 @@ public class ExsServerHandler extends SimpleChannelHandler
     {
         logger.info("e.getMeessage():{}", e.getMessage().toString());
         
-        ExsRequestParam recvExsData = (ExsRequestParam) e.getMessage();
-        apiManager.request(recvExsData.getDomain(), recvExsData.getKeyword(), recvExsData.getOutputCount(), recvExsData.getPageNo());
+        // request
+        ExsRequestParam exsRequestParam = (ExsRequestParam) e.getMessage();
+        apiManager.request(exsRequestParam.getDomain(), exsRequestParam.getKeyword(), exsRequestParam.getOutputCount(), exsRequestParam.getPageNo());
         
         // response
         ExsResponseParam exsResponseParam = new ExsResponseParam();
@@ -60,6 +68,16 @@ public class ExsServerHandler extends SimpleChannelHandler
             msg = "SEND FAIL.";
         
         logger.info(msg);
+        
+        if (exsResponseParam.getOutputCount() > InitUtil.ZERO)
+        {
+            StoringCache storingCache = StoringCache.getInstance();
+            String requestCode = storingCache.add(exsRequestParam, exsResponseParam);
+            storingCache.sizeToString();
+            
+            msgQ.add(CommandType.STORE, requestCode);
+            
+        }
         
     }
     
