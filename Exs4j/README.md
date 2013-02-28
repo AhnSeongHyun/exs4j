@@ -1,5 +1,5 @@
 # Exs4j(eXtern Search For Java)
-Exs4j is a searched contents server based on Open API of portal/search web services. 
+Exs4j is the searched contents server based on Open API of portal/search web services. 
 
 ###Links
 - Wiki : https://github.com/AhnSeongHyun/Exs4j/wiki
