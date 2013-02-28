@@ -1,7 +1,11 @@
 package org.espressoOtr.exs.cmd.process;
 
+import java.util.List;
+
 import org.espressoOtr.exs.cmd.Command;
 import org.espressoOtr.exs.localcache.StoringCache;
+import org.espressoOtr.exs.sql.SqlRequsetTable;
+import org.espressoOtr.exs.sql.SqlSearchResultTable;
 import org.espressoOtr.exs.sql.param.RequestRecord;
 import org.espressoOtr.exs.sql.param.SearchResultRecord;
 import org.espressootr.lib.utils.ParamUtil;
@@ -21,20 +25,43 @@ public class StoreCmdProc implements CommandProcessor
         
         if(ParamUtil.isValidParams(requestCode))
         {
-            StoringCache sc = StoringCache.getInstance();
+            StoringCache storingCache = StoringCache.getInstance();
             
-            RequestRecord rr = sc.getRequestRecord(requestCode);
-            SearchResultRecord srr =  sc.getSearchResultRecord(requestCode);
+            RequestRecord requestRecord = storingCache.getRequestRecord(requestCode);
+            List<SearchResultRecord> searchResultRecords =  storingCache.getSearchResultRecord(requestCode);
             
-            sc.sizeToString();
+            
             
             
             //TODO:가져와서, CS INDEX
-            //TODO:가져와서, DB INSERT 
+            storeShelfer(requestRecord);
+            
+            //TODO:가져와서, DB INSERT
+           
+            storeDb(requestRecord, searchResultRecords);
+           
             
         }
-        
+    }
+
+
+    private void storeDb(RequestRecord requestRecord, List<SearchResultRecord> searchResultRecords)
+    {
+        SqlRequsetTable.insert(requestRecord);
+        for(SearchResultRecord searchResultRecord: searchResultRecords)
+        {
+            SqlSearchResultTable.insert (searchResultRecord);
+        }
+    }
+
+
+    private void storeShelfer(RequestRecord requestRecord)
+    {
+        // TODO Auto-generated method stub
         
     }
+    
+    
+    
     
 }

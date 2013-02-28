@@ -15,9 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class StoringCache
 {
-    // TODO: 실제 CS INDEX 및 DB 에 저장 전에 저장하는 장소
-    // TODO: 싱글턴
-    
+ 
     Logger logger = LoggerFactory.getLogger(StoringCache.class);
     
     private static final StoringCache sharedObject = new StoringCache();
@@ -42,7 +40,13 @@ public class StoringCache
         requestRecord.setMasterKeyword(requestParam.getKeyword());
         requestRecord.setOrigin(requestParam.getDomain());
         
-        requestRecord.setRequestCode(StringAppender.mergeToStr(requestRecord.getMasterKeyword(), requestRecord.getOrigin(), "_", String.valueOf(requestRecord.getReqDate().hashCode())));
+        String requestCode = StringAppender.mergeToStr(requestRecord.getMasterKeyword(),
+                                                       requestRecord.getOrigin(),  
+                                                       String.valueOf(requestRecord.getReqDate().hashCode()));
+
+        requestCode = String.valueOf(requestCode.hashCode()); 
+        requestRecord.setRequestCode(requestCode);
+         
         
         int responseSize = responseParam.getOutputCount();
         for (int i = 0; i < responseSize; i++)
@@ -54,8 +58,8 @@ public class StoringCache
             srr.setLink(tsr.getLink());
             srr.setTitle(tsr.getTitle());
             srr.setSnippet(tsr.getSnippet());
-            srr.setRequestCode(requestRecord.getRequestCode());
-            srr.setDocId(requestRecord.getRequestCode() + String.valueOf(i));
+            srr.setRequestCode(requestCode);
+            srr.setDocId(requestCode + String.valueOf(i));
             
             totalSearchResultRecords.add(srr); 
         }
@@ -110,10 +114,10 @@ public class StoringCache
         
     }
     
-    public SearchResultRecord getSearchResultRecord(String requestCode)
+    public List<SearchResultRecord> getSearchResultRecord(String requestCode)
     {
       
-        SearchResultRecord returnSearchResultRecord = new SearchResultRecord();
+        List<SearchResultRecord> returnSearchResultRecords = new ArrayList<SearchResultRecord>();
         
         int totalSearchResultRecordsSize = this.totalSearchResultRecords.size();
         List<Integer> willRemoveIndexs = new ArrayList<Integer>();
@@ -121,11 +125,14 @@ public class StoringCache
         {
             if (this.totalSearchResultRecords.get(i).getRequestCode().equals(requestCode))
             {
+                SearchResultRecord returnSearchResultRecord = new SearchResultRecord();
                 returnSearchResultRecord.setRequestCode(this.totalSearchResultRecords.get(i).getRequestCode());
                 returnSearchResultRecord.setDocId(this.totalSearchResultRecords.get(i).getDocId());
                 returnSearchResultRecord.setTitle(this.totalSearchResultRecords.get(i).getTitle());
                 returnSearchResultRecord.setSnippet(this.totalSearchResultRecords.get(i).getSnippet());
                 returnSearchResultRecord.setLink(this.totalSearchResultRecords.get(i).getLink());
+                
+                returnSearchResultRecords.add(returnSearchResultRecord);
                 
                 willRemoveIndexs.add(i);
             }
@@ -141,7 +148,7 @@ public class StoringCache
             }
         }
         
-        return returnSearchResultRecord;
+        return returnSearchResultRecords;
         
     }
     

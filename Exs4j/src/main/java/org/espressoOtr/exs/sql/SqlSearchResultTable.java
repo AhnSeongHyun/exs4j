@@ -13,8 +13,7 @@ public class SqlSearchResultTable
         
         session.insert("tb_search_result_insertion.insertSearchResult", searchResultRecord);
         session.commit();
-        
-        session.close();
+         
     }
     
 }

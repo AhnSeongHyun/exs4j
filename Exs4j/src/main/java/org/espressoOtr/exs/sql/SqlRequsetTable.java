@@ -11,7 +11,6 @@ public class SqlRequsetTable
         SqlSession session = SqlSessionClient.getSqlSession();
         session.insert("tb_request_insertion.insertRequestRecord", requestRecord);
         session.commit();
-        
-        session.close();
+         
     }
 }
