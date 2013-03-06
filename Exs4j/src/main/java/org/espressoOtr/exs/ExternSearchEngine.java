@@ -10,6 +10,7 @@ import org.espressoOtr.exs.cmd.process.CommandProcGroup;
 import org.espressoOtr.exs.cmd.process.CommandProcessor;
 import org.espressoOtr.exs.common.Properties;
 import org.espressoOtr.exs.conf.ConfigurationReader;
+import org.espressoOtr.exs.index.Barista;
 import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.mngserver.ExsMngServer;
 import org.espressoOtr.exs.server.ExsServer;
@@ -27,6 +28,7 @@ public class ExternSearchEngine
         setConfig(args);
         getExsMode(args);
         
+        Barista barista = Barista.getInstance();
         MessageQueue msgQ = MessageQueue.getInstance();
         CommandProcGroup cmdProcGroup = CommandProcGroup.getInstance();
         
@@ -112,7 +114,9 @@ public class ExternSearchEngine
                 exsMode = ExsMode.NONE;
         }
         else
+        {
             exsMode = ExsMode.NONE;
+        }
         
     }
 }
