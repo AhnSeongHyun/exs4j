@@ -112,8 +112,7 @@ public class NaverApi implements SearchApi
         
         try
         {
-            requestNaverAPI(keyword);
-            
+            requestNaverAPI(keyword); 
         }
         catch (Exception e)
         {

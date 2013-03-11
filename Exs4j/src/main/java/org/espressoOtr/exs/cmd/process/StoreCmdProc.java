@@ -32,10 +32,10 @@ public class StoreCmdProc implements CommandProcessor
                 RequestRecord requestRecord = storingCache.getRequestRecord(requestCode);
                 List<SearchResultRecord> searchResultRecords = storingCache.getSearchResultRecord(requestCode);
                 
-                // TODO:가져와서, CS INDEX
+                // CS Indexing
                 storeShelfer(requestRecord);
                 
-                // DB INSERT
+                // DB Insert
                 storeDb(requestRecord, searchResultRecords);
                 
             }

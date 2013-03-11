@@ -19,14 +19,17 @@ import org.slf4j.LoggerFactory;
 
 public class ExternSearchEngine
 {
-    static ExsMode exsMode = ExsMode.NONE;
     
     static Logger logger = LoggerFactory.getLogger(ExternSearchEngine.class);
     
     public static void main(String[] args) throws Exception
     {
         setConfig(args);
-        getExsMode(args);
+        if (!isValidatedArgs(args))
+        {
+            showUsage();
+            return;
+        }
         
         Barista barista = Barista.getInstance();
         MessageQueue msgQ = MessageQueue.getInstance();
@@ -35,39 +38,33 @@ public class ExternSearchEngine
         ExsServer exsServer = ExsServer.getInstance();
         ExsMngServer exsMngServer = ExsMngServer.getInstance();
         
+        exsServer.start();
+        exsMngServer.start();
         
-        if (exsMode == ExsMode.SERVER_START)
+        msgQ.add("LOAD");
+        
+        CommandProcessor cmdProc = null;
+        
+        for (;;)
         {
-            exsServer.start();
-            exsMngServer.start();
-            
-            CommandProcessor cmdProc = null;
-            
-            for (;;)
+            if (msgQ.size() > 0)
             {
-                if (msgQ.size() > 0)
+                Command cmd = msgQ.get();
+                logger.info("{}", cmd.toString());
+                
+                if (cmd.getCmdType() != CommandType.NONE)
                 {
-                    Command cmd = msgQ.get();
-                    logger.info("{}", cmd.toString());
-                    
-                    if (cmd.getCmdType() != CommandType.NONE)
-                    {                        
-                        cmdProc = cmdProcGroup.getProc(cmd.getCmdType());
-                        cmdProc.process(cmd);
-                    }
-                    
-                    if(cmd.getCmdType() == CommandType.STOP)
-                    {
-                        break;
-                    }
+                    cmdProc = cmdProcGroup.getProc(cmd.getCmdType());
+                    cmdProc.process(cmd);
                 }
                 
-                Thread.sleep(100);
+                if (cmd.getCmdType() == CommandType.STOP)
+                {
+                    break;
+                }
             }
-        }
-        else
-        {
-            showUsage();
+            
+            Thread.sleep(100);
         }
         
         logger.info("Exs4j Shutdown..");
@@ -103,20 +100,23 @@ public class ExternSearchEngine
         logger.info("Exs4j : java -jar Exs4j-1.1.0-RELEASE.jar -server [config file path]");
     }
     
-    public static void getExsMode(String[] args)
+    public static boolean isValidatedArgs(String[] args)
     {
-        if (args.length >= 1)
+        boolean isValidatedArgs = true;
+        if (args.length == 2)
         {
             if (args[0].equals("-server"))
-                exsMode = ExsMode.SERVER_START;
+                isValidatedArgs = true;
             
             else
-                exsMode = ExsMode.NONE;
+                isValidatedArgs = false;
         }
         else
         {
-            exsMode = ExsMode.NONE;
+            isValidatedArgs = false;
         }
+        
+        return isValidatedArgs;
         
     }
 }

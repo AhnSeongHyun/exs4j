@@ -17,14 +17,12 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<manifest>
-
+						<manifest> 
 							<mainClass>org.espressoOtr.exs.ExternSearchEngine</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
-			</plugin>
-
+			</plugin> 
 		</plugins>
 	</build>
 

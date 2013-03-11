@@ -26,16 +26,15 @@ public class MessageQueue
     }
     
     public void add(Command msg)
-    { 
+    {
         this.msgQ.add(msg);
         logger.info("msgQ size : {}", msgQ.size());
         
     }
     
     public void add(CommandType cmdType, Object value)
-    { 
+    {
         this.msgQ.add(new Command(cmdType, value));
-     
         
     }
     
@@ -43,11 +42,8 @@ public class MessageQueue
     {
         
         this.msgQ.add(new Command(stringToCommand(msg), null));
-     
         
     }
-    
- 
     
     private CommandType stringToCommand(String msg)
     {
@@ -56,6 +52,18 @@ public class MessageQueue
         {
             cmdType = CommandType.STOP;
         }
+        else if (msg.equalsIgnoreCase(CommandType.STORE.name()))
+        {
+            cmdType = CommandType.STORE;
+        }
+        else if (msg.equalsIgnoreCase(CommandType.SAVE.name()))
+        {
+            cmdType = CommandType.SAVE;
+        } 
+        else if (msg.equalsIgnoreCase(CommandType.LOAD.name()))
+        {
+            cmdType = CommandType.LOAD; 
+        } 
         else
         {
             cmdType = CommandType.NONE;
