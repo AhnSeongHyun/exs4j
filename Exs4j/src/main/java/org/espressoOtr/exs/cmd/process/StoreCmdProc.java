@@ -1,14 +1,14 @@
 package org.espressoOtr.exs.cmd.process;
 
 import java.util.List;
-
+ 
 import org.espressoOtr.exs.cmd.Command;
-import org.espressoOtr.exs.index.Barista;
+import org.espressoOtr.exs.index.Barista; 
 import org.espressoOtr.exs.localcache.StoringCache;
-import org.espressoOtr.exs.sql.SqlRequsetTable;
+import org.espressoOtr.exs.sql.SqlRequestTable;
 import org.espressoOtr.exs.sql.SqlSearchResultTable;
 import org.espressoOtr.exs.sql.param.RequestRecord;
-import org.espressoOtr.exs.sql.param.SearchResultRecord; 
+import org.espressoOtr.exs.sql.param.SearchResultRecord;
 import org.espressootr.lib.utils.ParamUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public class StoreCmdProc implements CommandProcessor
     {
         try
         {
-            SqlRequsetTable.insert(requestRecord);
+            SqlRequestTable.insert(requestRecord);
             for (SearchResultRecord searchResultRecord : searchResultRecords)
             {
                 SqlSearchResultTable.insert(searchResultRecord);

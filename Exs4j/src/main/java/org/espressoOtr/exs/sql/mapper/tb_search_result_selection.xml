@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tb_search_result_selection">
+  
+  <select id="selectSearchResult" resultType="org.espressoOtr.exs.sql.param.SearchResultRecord">
+    SELECT requestCode, docId, title, snippet, link FROM tb_search_result WHERE requestCode = #{requestCode}
+  </select>
+  
+</mapper>

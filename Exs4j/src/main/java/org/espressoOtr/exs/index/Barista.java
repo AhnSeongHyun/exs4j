@@ -65,6 +65,8 @@ public class Barista
         logger.info("saving.. canisterCount : {}", mmCanisterList.size());
         
         int size = distMmCanisterMap.size();
+        
+        
         for (int i = 0; i < size; i++)
         {
             concurrentService.execute(new IndexSaveRunnableTh((List<MultiMapCanister>) distMmCanisterMap.get(i), i));
@@ -113,7 +115,7 @@ public class Barista
         
     }
     
-    private List<String> getValidFileList()
+    public List<String> getValidFileList()
     {
         List<String> filePathList = new ArrayList<String>();
         
@@ -127,6 +129,24 @@ public class Barista
         }
         
         return filePathList;
+    }
+    
+    /***
+     * 
+     * @param seachKeyword
+     *            separated word ex) googgle python => 1:google 2:python
+     * @return
+     */ 
+    public List<String> getRequestCodes(String searchKeyword)
+    {
+        List<String> requestCodes = new ArrayList<String>();
+        
+        for( Object obj : this.indexShelfer.search(searchKeyword))
+        {
+            requestCodes.add(obj.toString());
+        }
+        
+        return requestCodes;
     }
     
 }

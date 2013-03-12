@@ -41,7 +41,11 @@ public class ExternSearchEngine
         exsServer.start();
         exsMngServer.start();
         
-        msgQ.add("LOAD");
+        
+        if(barista.getValidFileList().size()>0)
+        { 
+            msgQ.add("LOAD");
+        }
         
         CommandProcessor cmdProc = null;
         
