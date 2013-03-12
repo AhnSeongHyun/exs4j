@@ -12,7 +12,12 @@ import org.espressootr.lib.text.splitter.FastSplitter;
 public class ConfigurationReader
 {
     
-    public static Map<String, String> settingConfigurations(String confFilePath)
+    /***
+     * Set Configuration to JVM Property. 
+     * @param confFilePath
+     * @return
+     */
+    public static Map<String, String> setConfigurations(String confFilePath)
     {
         Map<String, String> confKv = getConfigData(confFilePath);
         
@@ -27,6 +32,12 @@ public class ConfigurationReader
         
     }
     
+    
+    /***
+     * Get configurations from file
+     * @param confFilePath
+     * @return Map<Config key, Config, value>
+     */
     private static Map<String, String> getConfigData(String confFilePath)
     {
         Map<String, String> confKv = new HashMap<String, String>();

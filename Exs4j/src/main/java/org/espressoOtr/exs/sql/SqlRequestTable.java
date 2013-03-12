@@ -7,7 +7,10 @@ import org.espressoOtr.exs.sql.param.RequestRecord;
 
 public class SqlRequestTable
 {
-    
+    /***
+     * Insert RequestRecord to tb_request table. 
+     * @param requestRecord
+     */
     public static void insert(RequestRecord requestRecord)
     {
         SqlSession session = SqlSessionClient.getSqlSession();
@@ -16,6 +19,11 @@ public class SqlRequestTable
         
     }
     
+    /***
+     * Select tb_request all fields from tb_request where requestCode. 
+     * @param requestCode
+     * @return List of tb_request all fields
+     */
     public static List<RequestRecord> select(String requestCode)
     {
         SqlSession session = SqlSessionClient.getSqlSession();

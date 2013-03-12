@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
- 
 
 public class IntersectionMap
 {
@@ -14,6 +13,11 @@ public class IntersectionMap
     
     int maxCount = -1;
     
+    /***
+     * Add RequestCode and counting reference Count.
+     * 
+     * @param reqCode
+     */
     public void add(String reqCode)
     {
         int refCount = 1;
@@ -22,13 +26,11 @@ public class IntersectionMap
         {
             refCount = reqCodeIntersec.get(reqCode);
             refCount++;
-            
         }
         
         if (maxCount < refCount) maxCount = refCount;
         
         reqCodeIntersec.put(reqCode, refCount);
-        
     }
     
     public void clear()
@@ -36,6 +38,11 @@ public class IntersectionMap
         reqCodeIntersec.clear();
     }
     
+    /***
+     * Get Key by Sorting RefCount Desc.
+     * 
+     * @return
+     */
     public List<String> getDescKeyList()
     {
         List<String> reqCodeList = new ArrayList<String>();
@@ -53,13 +60,19 @@ public class IntersectionMap
             }
         }
         else
-        {
+        {// If all refCounts == 1, addAll.
+        
             reqCodeList.addAll(this.reqCodeIntersec.keySet());
         }
         
         return reqCodeList;
     }
     
+    /***
+     * Convert reqCodeIntersec to List<RequestCodeCount> for Sorting
+     * 
+     * @return List<RequestCodeCount>
+     */
     private List<RequestCodeCount> convMapToRequestCodeCount()
     {
         List<RequestCodeCount> reqCodeCountList = new ArrayList<RequestCodeCount>();
@@ -102,6 +115,11 @@ public class IntersectionMap
         Collections.sort(reqCodeCountList, requestCodeCounDescComparator);
     }
     
+    /***
+     * Internal class for IntersectionMap Sorting.
+     * 
+     * @author AhnSeongHyun
+     */
     private class RequestCodeCount
     {
         private String requestCode;
@@ -109,14 +127,14 @@ public class IntersectionMap
         private int refCount;
         
         @SuppressWarnings("unused")
-        private RequestCodeCount(){}
-        
+        private RequestCodeCount()
+        {
+        }
         
         public RequestCodeCount(String requestCode, int refCount)
         {
             this.requestCode = requestCode;
             this.refCount = refCount;
-            
         }
         
         public String getRequestCode()

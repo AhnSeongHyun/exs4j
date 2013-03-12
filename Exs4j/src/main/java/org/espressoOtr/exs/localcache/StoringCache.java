@@ -3,28 +3,36 @@ package org.espressoOtr.exs.localcache;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
- 
+
 import org.espressoOtr.exs.api.result.TextSearchResult;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
 import org.espressoOtr.exs.sql.param.RequestRecord;
-import org.espressoOtr.exs.sql.param.SearchResultRecord; 
+import org.espressoOtr.exs.sql.param.SearchResultRecord;
 import org.espressootr.lib.string.StringAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/***
+ * LocalCache for Sorting Index and DB. 
+ * @author AhnSeongHyun
+ *
+ */
 public class StoringCache
 {
- 
+    
     Logger logger = LoggerFactory.getLogger(StoringCache.class);
     
     private static final StoringCache sharedObject = new StoringCache();
     
-    private List<RequestRecord> totalRequestRecords = new ArrayList<RequestRecord>(); 
+    private List<RequestRecord> totalRequestRecords = new ArrayList<RequestRecord>();
+    
     private List<SearchResultRecord> totalSearchResultRecords = new ArrayList<SearchResultRecord>();
     
     private StoringCache()
     {
+        throw new AssertionError();
     }
     
     public static StoringCache getInstance()
@@ -32,6 +40,12 @@ public class StoringCache
         return sharedObject;
     }
     
+    /***
+     * Add ExsReqiesetParam and ExsResponseParam to totalRequestRecords, totalSearchResultRecords
+     * @param ExsReqiesetParam
+     * @param ExsResponseParam
+     * @return Current RequestCode; 
+     */
     public String add(ExsRequestParam requestParam, ExsResponseParam responseParam)
     {
         
@@ -40,19 +54,16 @@ public class StoringCache
         requestRecord.setMasterKeyword(requestParam.getKeyword());
         requestRecord.setOrigin(requestParam.getDomain());
         
-        String requestCode = StringAppender.mergeToStr(requestRecord.getMasterKeyword(),
-                                                       requestRecord.getOrigin(),  
-                                                       String.valueOf(requestRecord.getReqDate().hashCode()));
-
-        requestCode = String.valueOf(requestCode.hashCode()); 
+        String requestCode = StringAppender.mergeToStr(requestRecord.getMasterKeyword(), requestRecord.getOrigin(), String.valueOf(requestRecord.getReqDate().hashCode()));
+        
+        requestCode = String.valueOf(requestCode.hashCode());
         requestRecord.setRequestCode(requestCode);
-         
         
         int responseSize = responseParam.getOutputCount();
         for (int i = 0; i < responseSize; i++)
         {
             
-            TextSearchResult tsr = (TextSearchResult)responseParam.getResultList().get(i);
+            TextSearchResult tsr = (TextSearchResult) responseParam.getResultList().get(i);
             
             SearchResultRecord srr = new SearchResultRecord();
             srr.setLink(tsr.getLink());
@@ -61,7 +72,7 @@ public class StoringCache
             srr.setRequestCode(requestCode);
             srr.setDocId(requestCode + String.valueOf(i));
             
-            totalSearchResultRecords.add(srr); 
+            totalSearchResultRecords.add(srr);
         }
         
         totalRequestRecords.add(requestRecord);
@@ -70,6 +81,9 @@ public class StoringCache
         
     }
     
+    /**
+     * StoringCache clear. 
+     */
     public void clear()
     {
         totalRequestRecords.clear();
@@ -77,13 +91,17 @@ public class StoringCache
         
     }
     
-
     public void sizeToString()
     {
         logger.info("TRR:{} TSR:{}", this.totalRequestRecords.size(), this.totalSearchResultRecords.size());
         
     }
-
+    
+    /***
+     * Get RequestRecord by given requestCode.
+     * @param requestCode
+     * @return
+     */
     public RequestRecord getRequestRecord(String requestCode)
     {
         
@@ -114,9 +132,15 @@ public class StoringCache
         
     }
     
+    
+    /***
+     * Get SearchReusltRecord List by given requestCode. 
+     * @param requestCode
+     * @return  List<SearchResultRecord>
+     */
     public List<SearchResultRecord> getSearchResultRecord(String requestCode)
     {
-      
+        
         List<SearchResultRecord> returnSearchResultRecords = new ArrayList<SearchResultRecord>();
         
         int totalSearchResultRecordsSize = this.totalSearchResultRecords.size();
@@ -140,17 +164,16 @@ public class StoringCache
         
         if (willRemoveIndexs.size() != 0)
         {
-            int arrangeIndex = 0; 
-            for(int willRemoveIndex : willRemoveIndexs)
+            int arrangeIndex = 0;
+            for (int willRemoveIndex : willRemoveIndexs)
             {
-                this.totalSearchResultRecords.remove(willRemoveIndex-arrangeIndex);
-                arrangeIndex++; 
+                this.totalSearchResultRecords.remove(willRemoveIndex - arrangeIndex);
+                arrangeIndex++;
             }
         }
         
         return returnSearchResultRecords;
         
     }
-    
     
 }

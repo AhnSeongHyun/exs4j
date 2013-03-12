@@ -16,12 +16,11 @@ public class JsonDecoder extends OneToOneDecoder
     @Override
     protected Object decode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception
     {
+        //ChannelBuffer => Json => ExsRequestParam. 
         if (msg instanceof ChannelBuffer)
-        {
-
+        { 
             String msgStr = new String(((ChannelBuffer) msg).array());
             ExsRequestParam exsReqParam = JsonBodum.fromJson(msgStr, ExsRequestParam.class);
-            
             return exsReqParam;
             
         }

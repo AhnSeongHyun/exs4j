@@ -40,11 +40,10 @@ public class ExsMngServerHandler extends SimpleChannelHandler
     
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception
-    {
-        
+    { 
         String msgStr = new String(((ChannelBuffer) e.getMessage()).array());
         logger.info("e.getMeessage():{}", msgStr);
-        msgQ.add(msgStr);
+        msgQ.add(msgStr); // All messages from ExsMngPort are added to MessageQ. 
         
     }
     

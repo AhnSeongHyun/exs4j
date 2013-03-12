@@ -36,6 +36,9 @@ public class ExsMngServer
         return sharedObject;
     }
     
+    /***
+     * Start Exs4j Manager server. 
+     */
     public void start()
     {
         int port = Integer.parseInt(System.getProperty(Properties.PORT));
@@ -57,6 +60,9 @@ public class ExsMngServer
         
     }
     
+    /***
+     * Stop Exs4j Manager server. 
+     */
     public void stop()
     {
         ChannelGroupFuture futures = allChannels.close();

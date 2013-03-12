@@ -14,7 +14,7 @@ public class JsonMngPipelineFactory implements ChannelPipelineFactory
     public ChannelPipeline getPipeline() throws Exception
     {
         ChannelPipeline pipeline = pipeline();
-        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter())); 
+        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter())); //<CR><LF>
         pipeline.addLast("handler", new ExsMngServerHandler());
         return pipeline;
     }

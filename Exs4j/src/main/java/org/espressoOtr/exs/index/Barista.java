@@ -29,6 +29,7 @@ public class Barista
     
     private Barista()
     {
+        throw new AssertionError();
     }
     
     public static Barista getInstance()

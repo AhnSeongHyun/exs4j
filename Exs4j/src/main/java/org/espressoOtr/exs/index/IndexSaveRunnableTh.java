@@ -11,6 +11,11 @@ import org.espressootr.lib.string.StringAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * Save MultiMapCanister to index file using json format.  
+ * @author AhnSeongHyun
+ *
+ */
 public class IndexSaveRunnableTh implements Runnable
 {
     List<MultiMapCanister> willSaveMmCanisterList = null;
@@ -22,7 +27,7 @@ public class IndexSaveRunnableTh implements Runnable
     public IndexSaveRunnableTh(List<MultiMapCanister> list, int fileIndex)
     {
         this.willSaveMmCanisterList = list;
-        this.fileName = StringAppender.mergeToStr("./" + fileName + String.valueOf(fileIndex) + ".rdb");
+        this.fileName = StringAppender.mergeToStr("./",  fileName , String.valueOf(fileIndex), ".rdb");
         
     }
     

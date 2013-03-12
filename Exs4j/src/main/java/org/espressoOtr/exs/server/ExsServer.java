@@ -28,13 +28,22 @@ public class ExsServer
     
     private ExsServer()
     {
+        throw new AssertionError();
     }
     
+    /***
+     * Get Singleton instance this class
+     * @return
+     */
     public static ExsServer getInstance()
     {
         return sharedObject;
     }
     
+    
+    /***
+     * Start Exs4j Sever using JVM.Property("port");
+     */
     public void start()
     {
         
@@ -56,6 +65,11 @@ public class ExsServer
         logger.info("ExsServer Started..  port:{}", port);
     }
     
+    
+
+    /***
+     * Stop Exs4j Sever
+     */
     public void stop()
     {
         ChannelGroupFuture futures = allChannels.close();

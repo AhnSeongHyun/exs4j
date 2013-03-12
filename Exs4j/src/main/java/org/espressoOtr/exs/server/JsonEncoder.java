@@ -23,6 +23,7 @@ public class JsonEncoder extends OneToOneEncoder
     @Override
     protected Object encode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception
     {
+        //ExsResponseParam => Json => ChannelBuffer  
         if (msg instanceof ExsResponseParam)
         { 
             ExsResponseParam exsResponseParam = (ExsResponseParam) msg;

@@ -25,6 +25,11 @@ public class MessageQueue
         return sharedObject;
     }
     
+    /**
+     * Add Command to msaQ.
+     * 
+     * @param msg
+     */
     public void add(Command msg)
     {
         this.msgQ.add(msg);
@@ -32,19 +37,33 @@ public class MessageQueue
         
     }
     
+    /**
+     * Add CommandType/Value to msgQ.
+     * 
+     * @param msg
+     */
     public void add(CommandType cmdType, Object value)
     {
         this.msgQ.add(new Command(cmdType, value));
         
     }
     
+    /**
+     * Add CommandType/null to msgQ.
+     * 
+     * @param msg
+     */
     public void add(String msg)
     {
-        
         this.msgQ.add(new Command(stringToCommand(msg), null));
-        
     }
     
+    /***
+     * Command String to CommandType ex) "MOVE" => CommandType.MOVE
+     * 
+     * @param msg
+     * @return CommandType
+     */
     private CommandType stringToCommand(String msg)
     {
         CommandType cmdType = CommandType.NONE;
@@ -59,11 +78,11 @@ public class MessageQueue
         else if (msg.equalsIgnoreCase(CommandType.SAVE.name()))
         {
             cmdType = CommandType.SAVE;
-        } 
+        }
         else if (msg.equalsIgnoreCase(CommandType.LOAD.name()))
         {
-            cmdType = CommandType.LOAD; 
-        } 
+            cmdType = CommandType.LOAD;
+        }
         else
         {
             cmdType = CommandType.NONE;
@@ -84,6 +103,5 @@ public class MessageQueue
     public int size()
     {
         return this.msgQ.size();
-        
     }
 }

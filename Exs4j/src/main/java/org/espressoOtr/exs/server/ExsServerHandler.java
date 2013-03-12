@@ -42,8 +42,7 @@ public class ExsServerHandler extends SimpleChannelHandler
     MessageQueue msgQ = MessageQueue.getInstance();
     
     public ExsServerHandler()
-    {
-       
+    { 
         scm = new SearchManager();
     }
     

@@ -1,6 +1,7 @@
 package org.espressoOtr.exs.server.params;
 
  
+import org.espressootr.lib.json.JsonBodum;
 import org.espressootr.lib.utils.InitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,11 @@ public class ExsRequestParam
     public void setPageNo(int pageNo)
     {
         this.pageNo = pageNo;
+    }
+     
+    public String toString()
+    {
+        return JsonBodum.toJson(this); 
     }
     
   

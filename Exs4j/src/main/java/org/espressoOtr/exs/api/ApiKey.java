@@ -4,7 +4,9 @@ import java.util.Random;
 
  
 import org.espressoOtr.exs.common.Properties;
+import org.espressoOtr.exs.constant.OpenApi;
 import org.espressootr.lib.utils.InitUtil;
+import org.espressootr.lib.utils.SplitterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +22,11 @@ public class ApiKey
         APIKEY = getKeyString(className);
     }
     
+    /***
+     * Get open api key from JVM properties. 
+     * @param className
+     * @return
+     */
     private String getKeyString(String className)
     { 
         
@@ -29,16 +36,16 @@ public class ApiKey
         String propertyKey = InitUtil.EMPTY_STRING;
         
         
-        if (className.equals("NaverApi"))
+        if (className.equals(OpenApi.NAVER_API))
         {
             propertyKey = Properties.NAVER_KEY;
         }
-        else if (className.equals("DaumApi"))
+        else if (className.equals(OpenApi.DAUM_API))
         {
             propertyKey = Properties.DAUM_KEY;
                    
         }
-        else if (className.equals("BingApi"))
+        else if (className.equals(OpenApi.BING_API))
         {
             propertyKey = Properties.BING_KEY;
         }
@@ -48,9 +55,14 @@ public class ApiKey
         return apiKey;
     }
     
+    /***
+     * If open api key is multiple value, get key randomly. 
+     * @param keys
+     * @return
+     */
     private String getRandomKey(String keys)
     {
-        String[] keyArr = keys.split(",");
+        String[] keyArr = keys.split(SplitterUtil.COMMA);
         
         Random oRandom = new Random();
         

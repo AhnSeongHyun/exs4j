@@ -3,6 +3,7 @@ package org.espressoOtr.exs.server.params;
 import java.util.List;
 
 import org.espressoOtr.exs.api.result.SearchResult;
+import org.espressootr.lib.json.JsonBodum;
 
  
 public class ExsResponseParam
@@ -29,5 +30,11 @@ public class ExsResponseParam
     {
         this.resultList = resultList;
     }
+    
+    public String toString()
+    {
+        return JsonBodum.toJson(this); 
+    }
+    
     
 }

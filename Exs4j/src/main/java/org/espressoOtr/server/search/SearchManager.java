@@ -16,18 +16,24 @@ import org.slf4j.LoggerFactory;
 
 public class SearchManager
 {
-    
+    Logger logger = LoggerFactory.getLogger(SearchManager.class);
+      
     Barista baristaIndex = Barista.getInstance();
     
     ApiManager apiManager = null;
-    
-    Logger logger = LoggerFactory.getLogger(SearchManager.class);
     
     public SearchManager()
     {
         apiManager = new ApiManager();
     }
     
+    /***
+     * 1) Search from Internal index and DB. 
+     * 2) Search from OpenAPI. 
+     * @param ExsRequestParam  
+     * @return ExsResponseParam
+     * @throws Exception
+     */
     public ExsResponseParam search(ExsRequestParam exsReqParam) throws Exception
     {
         
@@ -73,6 +79,11 @@ public class SearchManager
         
     }
     
+    /***
+     * Get Intersected ReqeustCode from Barista Index. 
+     * @param searchKeyword
+     * @return List<String> requestCodeList
+     */
     private List<String> getRequestCode(String searchKeyword)
     {
         String[] kwds = searchKeyword.split(" ");

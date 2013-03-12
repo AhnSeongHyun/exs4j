@@ -10,6 +10,11 @@ import org.espressootr.lib.utils.InitUtil;
 
 import com.google.gson.Gson;
 
+/***
+ * Load MultiMapCanister json String from saved index file. 
+ * @author AhnSeongHyun
+ *
+ */
 public class IndexLoadCallableTh implements Callable<List<MultiMapCanister>>
 {
     String indexFilePath = InitUtil.EMPTY_STRING;
