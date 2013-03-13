@@ -27,8 +27,7 @@ public class ExsServer
     static final ChannelGroup allChannels = new DefaultChannelGroup("exs-server");
     
     private ExsServer()
-    {
-        throw new AssertionError();
+    { 
     }
     
     /***

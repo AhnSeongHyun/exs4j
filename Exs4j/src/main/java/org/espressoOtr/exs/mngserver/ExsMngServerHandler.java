@@ -1,5 +1,6 @@
 package org.espressoOtr.exs.mngserver;
 
+import org.espressoOtr.exs.cmd.CommandType;
 import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.mngserver.params.ExsMngResponseParam;
 import org.espressoOtr.exs.server.ExsServerHandler;
@@ -43,6 +44,12 @@ public class ExsMngServerHandler extends SimpleChannelHandler
     { 
         String msgStr = new String(((ChannelBuffer) e.getMessage()).array());
         logger.info("e.getMeessage():{}", msgStr);
+        
+        if(msgStr.equals(CommandType.STOP))
+        {
+            msgQ.add("SAVE");
+        }
+        
         msgQ.add(msgStr); // All messages from ExsMngPort are added to MessageQ. 
         
     }

@@ -1,4 +1,4 @@
-package org.espressoOtr.server.search;
+package org.espressoOtr.exs.server.search;
 
 import java.util.ArrayList;
 import java.util.Collections;

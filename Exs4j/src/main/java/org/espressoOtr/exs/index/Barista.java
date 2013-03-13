@@ -28,8 +28,7 @@ public class Barista
     private MultiMapShelfer indexShelfer = new MultiMapShelfer();
     
     private Barista()
-    {
-        throw new AssertionError();
+    { 
     }
     
     public static Barista getInstance()

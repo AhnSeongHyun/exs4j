@@ -1,15 +1,11 @@
 package org.espressoOtr.exs.server;
 
- 
-import org.espressoOtr.exs.cmd.CommandType;
-import org.espressoOtr.exs.localcache.StoringCache;
 import org.espressoOtr.exs.messageq.MessageQueue;
 import org.espressoOtr.exs.server.params.ExsRequestParam;
 import org.espressoOtr.exs.server.params.ExsResponseParam;
-import org.espressoOtr.server.search.SearchManager;
- 
+import org.espressoOtr.exs.server.search.SearchManager;
+
 import org.espressootr.lib.string.StringAppender;
-import org.espressootr.lib.utils.InitUtil;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -35,14 +31,14 @@ public class ExsServerHandler extends SimpleChannelHandler
     
     String msg = "";
     
-    SearchManager scm = null; 
+    SearchManager scm = null;
     
     Logger logger = LoggerFactory.getLogger(ExsServerHandler.class);
     
     MessageQueue msgQ = MessageQueue.getInstance();
     
     public ExsServerHandler()
-    { 
+    {
         scm = new SearchManager();
     }
     
@@ -51,13 +47,9 @@ public class ExsServerHandler extends SimpleChannelHandler
     {
         logger.info("e.getMeessage():{}", e.getMessage().toString());
         
-        // request
-        ExsRequestParam exsRequestParam = (ExsRequestParam) e.getMessage(); 
-    
+        ExsRequestParam exsRequestParam = (ExsRequestParam) e.getMessage();
         
-        //SCM
-        ExsResponseParam exsResponseParam = scm.search(exsRequestParam); 
-        
+        ExsResponseParam exsResponseParam = scm.search(exsRequestParam);
         
         ChannelFuture result = sendCrxResponseParam(e.getChannel(), exsResponseParam);
         
@@ -68,17 +60,8 @@ public class ExsServerHandler extends SimpleChannelHandler
         
         logger.info(msg);
         
-        if (exsResponseParam.getOutputCount() > InitUtil.ZERO)
-        {
-            StoringCache storingCache = StoringCache.getInstance();
-            String requestCode = storingCache.add(exsRequestParam, exsResponseParam);
-            storingCache.sizeToString();
-            
-            msgQ.add(CommandType.STORE, requestCode); 
-        }
-        
     }
-     
+    
     public ChannelFuture sendCrxResponseParam(Channel responseChannel, ExsResponseParam exsResponseParam)
     {
         logger.info("sendCrxResponseParam start");
@@ -103,6 +86,8 @@ public class ExsServerHandler extends SimpleChannelHandler
         
         msg = StringAppender.mergeToStr(disconnectedMsg, e.getChannel().getLocalAddress().toString(), " , Connections:", String.valueOf(allChannels.size()));
         logger.info(msg);
+        
+        msgQ.add("SAVE");
     }
     
     @Override

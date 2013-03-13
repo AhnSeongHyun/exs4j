@@ -32,7 +32,7 @@ public class StoringCache
     
     private StoringCache()
     {
-        throw new AssertionError();
+        
     }
     
     public static StoringCache getInstance()

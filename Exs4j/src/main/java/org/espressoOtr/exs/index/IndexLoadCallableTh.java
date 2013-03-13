@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 public class IndexLoadCallableTh implements Callable<List<MultiMapCanister>>
 {
     String indexFilePath = InitUtil.EMPTY_STRING;
+    Gson gson = new Gson();
     
     public IndexLoadCallableTh(String filePath)
     {
@@ -28,7 +29,7 @@ public class IndexLoadCallableTh implements Callable<List<MultiMapCanister>>
     public List<MultiMapCanister> call() throws Exception
     {
         List<MultiMapCanister> mmCanisterList = new ArrayList<MultiMapCanister>();
-        Gson gson = new Gson();
+       
         
         List<String> jsonStrFromFile = FileReaderManager.readLineFromFile(this.indexFilePath);
         
