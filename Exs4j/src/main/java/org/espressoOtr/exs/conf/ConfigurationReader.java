@@ -49,10 +49,11 @@ public class ConfigurationReader
             
             for (String confData : confDatas)
             {
-            	if(confData.length()>0)
-            		confKv.put(fs.splitToArray(confData)[0], fs.splitToArray(confData)[1].replace("\"", ""));
+                if (confData.length() > 0 && !confData.startsWith(";"))//except comment startsWith ";"
+                {
+                    confKv.put(fs.splitToArray(confData)[0], fs.splitToArray(confData)[1].replace("\"", ""));
+                } 
             }
-            
         }
         catch (IOException e)
         {

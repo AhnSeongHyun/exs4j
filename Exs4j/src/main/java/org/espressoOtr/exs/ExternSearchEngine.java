@@ -28,8 +28,7 @@ public class ExternSearchEngine
     
     static CommandProcGroup cmdProcGroup = CommandProcGroup.getInstance();
     
-    static int mainLoopSleep = 100; //ms
-    
+     
     public static void main(String[] args)
     {
         try
@@ -98,10 +97,14 @@ public class ExternSearchEngine
         return confFilePath;
     }
     
+    
+    
     public static void showUsage()
     {
         logger.info("Exs4j : java -jar Exs4j-1.1.0-RELEASE.jar -server [config file path]");
     }
+    
+    
     
     /***
      * Check Run Arguments
@@ -127,6 +130,8 @@ public class ExternSearchEngine
     }
     
     
+    
+    
     /*** 
      * MessageLoop for Command 
      * @throws InterruptedException
@@ -134,6 +139,9 @@ public class ExternSearchEngine
     private static void RunMessageLoop() throws InterruptedException
     {
         CommandProcessor cmdProc = null;
+        
+        long loopSleep = Integer.parseInt(System.getProperty(Properties.LOOP_SLEEP));
+        
         
         for (;;)
         {
@@ -154,7 +162,7 @@ public class ExternSearchEngine
                 }
             }
             
-            Thread.sleep(mainLoopSleep);
+            Thread.sleep(loopSleep); 
             
         }// for infinite loop
     }

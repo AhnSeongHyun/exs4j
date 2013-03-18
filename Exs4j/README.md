@@ -16,7 +16,7 @@ Exs4j is the searched contents server based on Open API of portal/search web ser
 
 - /exs4j/Exs4j/target/Exs4j-1.1.0-RELEASE.jar
  
->java -jar Exs4j-1.1.0-RELEASE.jar -server exs.conf
+>java -jar Exs4j-1.5.0-BETA.jar -server exs4j.conf
  
  
  
